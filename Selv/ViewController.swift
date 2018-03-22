@@ -10,6 +10,8 @@ import UIKit
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, FSCalendarDataSource, FSCalendarDelegate, UIGestureRecognizerDelegate {
     
+    var actions: [String] = ["Hello", "Ler um livro"]
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var calendar: FSCalendar!
     
@@ -88,15 +90,18 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     // MARK:- UITableViewDataSource
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 20
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return [10][section]
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
+        cell.backgroundColor = #colorLiteral(red: 0.7540688515, green: 0.7540867925, blue: 0.7540771365, alpha: 1)
+        cell.layer.cornerRadius = 7
+        cell.textLabel?.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         return cell
     }
     
