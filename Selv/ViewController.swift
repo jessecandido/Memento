@@ -14,8 +14,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     var activities: [NSManagedObject] = []
     
     @IBAction func addButton(_ sender: Any) {
-        let alert = UIAlertController(title: "New Name",
-                                      message: "Add a new name",
+        let alert = UIAlertController(title: "New Activity",
+                                      message: "Add a new activity",
                                       preferredStyle: .alert)
         let saveAction = UIAlertAction(title: "Save",
                                        style: .default) {
@@ -48,6 +48,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let action = NSManagedObject(entity: entity,
                                      insertInto: managedContext)
         action.setValue(name, forKeyPath: "name")
+        action.setValue(UIColor.random, forKeyPath: "color")
         do {
             try managedContext.save()
             activities.append(action)
@@ -163,9 +164,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let action = activities[indexPath.section]
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
-        cell.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         cell.layer.cornerRadius = 7
         cell.textLabel?.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        cell.selectionStyle = .none
         cell.textLabel?.text = action.value(forKey: "name") as? String
         return cell
     }
@@ -173,12 +174,16 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     // MARK:- UITableViewDelegate
     
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        //let cell = tableView.cellForRow(at: indexPath)!
+       // cell.backgroundColor = .blue
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        if indexPath.section == 0 {
-            let scope: FSCalendarScope = (indexPath.row == 0) ? .month : .week
-            self.calendar.setScope(scope, animated: true)
-        }
+        let cell = tableView.cellForRow(at: indexPath)!
+        let action = activities[indexPath.section]
+        cell.backgroundColor = action.value(forKey: "color") as? UIColor
+       // mark activity as YES for this day
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -197,3 +202,15 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
 }
 
+
+extension CGFloat {
+    static var random: CGFloat {
+        return CGFloat(arc4random()) / CGFloat(UInt32.max)
+    }
+}
+
+extension UIColor {
+    static var random: UIColor {
+        return UIColor(red: .random, green: .random, blue: .random, alpha: 1.0)
+    }
+}

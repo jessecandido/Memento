@@ -98,6 +98,7 @@
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.83741801979999997" green="0.83743780850000005" blue="0.83742713930000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -105,10 +106,22 @@
                                     <outlet property="delegate" destination="Hrc-wy-oIK" id="2av-Kq-vHF"/>
                                 </connections>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Ze-fc-GCZ">
-                                <rect key="frame" x="288" y="308" width="71" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Ze-fc-GCZ">
+                                <rect key="frame" x="300" y="592" width="60" height="60"/>
+                                <color key="backgroundColor" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="4ot-4r-g5X"/>
+                                    <constraint firstAttribute="width" constant="60" id="dVX-Sl-tIt"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                <state key="normal" title="+">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="30"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="addButton:" destination="Hrc-wy-oIK" eventType="touchUpInside" id="blE-La-lVm"/>
                                 </connections>
@@ -119,7 +132,9 @@
                             <constraint firstItem="bIJ-9R-axU" firstAttribute="leading" secondItem="diH-N9-a9R" secondAttribute="leading" id="2Ah-f7-qYU"/>
                             <constraint firstItem="dSD-Ck-jPh" firstAttribute="trailing" secondItem="bIJ-9R-axU" secondAttribute="trailing" constant="-16" id="Ik1-IH-BbM"/>
                             <constraint firstAttribute="trailing" secondItem="bIJ-9R-axU" secondAttribute="trailing" id="Mdi-gq-huz"/>
+                            <constraint firstItem="Qww-O9-IPu" firstAttribute="trailing" secondItem="8Ze-fc-GCZ" secondAttribute="trailing" constant="15" id="WJq-mT-2cY"/>
                             <constraint firstItem="dSD-Ck-jPh" firstAttribute="leading" secondItem="bIJ-9R-axU" secondAttribute="leading" constant="16" id="bx8-j3-WZb"/>
+                            <constraint firstItem="5Wt-6G-mcN" firstAttribute="top" secondItem="8Ze-fc-GCZ" secondAttribute="bottom" constant="15" id="hLg-d4-SDp"/>
                             <constraint firstItem="5Wt-6G-mcN" firstAttribute="top" secondItem="dSD-Ck-jPh" secondAttribute="bottom" id="nzH-90-DZZ"/>
                             <constraint firstItem="bIJ-9R-axU" firstAttribute="top" secondItem="Er8-HY-2uM" secondAttribute="bottom" constant="-20" id="tk9-uC-FOg"/>
                             <constraint firstItem="dSD-Ck-jPh" firstAttribute="top" secondItem="bIJ-9R-axU" secondAttribute="bottom" id="ymD-3E-tn7"/>
