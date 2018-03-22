@@ -7,10 +7,55 @@
 //
 
 import UIKit
+import CoreData
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, FSCalendarDataSource, FSCalendarDelegate, UIGestureRecognizerDelegate {
     
-    var actions: [String] = ["Hello", "Ler um livro"]
+    var activities: [NSManagedObject] = []
+    
+    @IBAction func addButton(_ sender: Any) {
+        let alert = UIAlertController(title: "New Name",
+                                      message: "Add a new name",
+                                      preferredStyle: .alert)
+        let saveAction = UIAlertAction(title: "Save",
+                                       style: .default) {
+                                        [unowned self] action in
+                                        guard let textField = alert.textFields?.first,
+                                            let nameToSave = textField.text else {
+                                                return
+                                        }
+                                        self.save(name: nameToSave)
+                                        self.tableView.reloadData()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel",
+                                         style: .default)
+        alert.addTextField()
+        alert.addAction(cancelAction)
+        alert.addAction(saveAction)
+        present(alert, animated: true)
+    }
+    
+    func save(name: String) {
+        guard let appDelegate =
+            UIApplication.shared.delegate as? AppDelegate else {
+                return
+        }
+        let managedContext =
+            appDelegate.persistentContainer.viewContext
+        let entity =
+            NSEntityDescription.entity(forEntityName: "Activity",
+                                       in: managedContext)!
+        let action = NSManagedObject(entity: entity,
+                                     insertInto: managedContext)
+        action.setValue(name, forKeyPath: "name")
+        do {
+            try managedContext.save()
+            activities.append(action)
+        } catch let error as NSError {
+            print("Could not save. \(error), \(error.userInfo)")
+        }
+    }
+    
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var calendar: FSCalendar!
@@ -47,6 +92,24 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         // For UITest
         self.calendar.accessibilityIdentifier = "calendar"
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        guard let appDelegate =
+            UIApplication.shared.delegate as? AppDelegate else {
+                return
+        }
+        let managedContext =
+            appDelegate.persistentContainer.viewContext
+
+        let fetchRequest =
+            NSFetchRequest<NSManagedObject>(entityName: "Activity")
+        do {
+            activities = try managedContext.fetch(fetchRequest)
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
+        }
     }
     
     deinit {
@@ -90,7 +153,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     // MARK:- UITableViewDataSource
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 20
+        return activities.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -98,10 +161,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let action = activities[indexPath.section]
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
-        cell.backgroundColor = #colorLiteral(red: 0.7540688515, green: 0.7540867925, blue: 0.7540771365, alpha: 1)
+        cell.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         cell.layer.cornerRadius = 7
         cell.textLabel?.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        cell.textLabel?.text = action.value(forKey: "name") as? String
         return cell
     }
     
