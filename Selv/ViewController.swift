@@ -13,6 +13,35 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     var activities: [NSManagedObject] = []
     
+    var daySelectedActivities = [NSManagedObject]()
+    
+    var dates: [NSManagedObject] = []
+    
+    var selectedDay = Date() {
+        didSet {
+            guard let appDelegate =
+                UIApplication.shared.delegate as? AppDelegate else {
+                    return
+            }
+            let managedContext =
+                appDelegate.persistentContainer.viewContext
+            
+            let fetchRequest =
+                NSFetchRequest<NSManagedObject>(entityName: "Day")
+            fetchRequest.predicate = NSPredicate(format: "date == %@", selectedDay as CVarArg)
+            do {
+                daySelectedActivities = try managedContext.fetch(fetchRequest)
+            } catch let error as NSError {
+                print("Could not fetch. \(error), \(error.userInfo)")
+            }
+            print(daySelectedActivities)
+        }
+    }
+    
+    
+    
+    
+    
     @IBAction func addButton(_ sender: Any) {
         let alert = UIAlertController(title: "New Activity",
                                       message: "Add a new activity",
@@ -83,8 +112,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         if UIDevice.current.model.hasPrefix("iPad") {
             self.calendarHeightConstraint.constant = 400
         }
-        
+        self.selectedDay = Date()
         self.calendar.select(Date())
+        
+        // TODO: get data for today here.
         
         self.view.addGestureRecognizer(self.scopeGesture)
         self.tableView.panGestureRecognizer.require(toFail: self.scopeGesture)
@@ -145,6 +176,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         if monthPosition == .next || monthPosition == .previous {
             calendar.setCurrentPage(date, animated: true)
         }
+        selectedDay = date
+        // TODO: get data for the new date
+        //print("SELECTED DAY: \(selectedDay)")
     }
     
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
@@ -181,8 +215,29 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)!
+
         let action = activities[indexPath.section]
         cell.backgroundColor = action.value(forKey: "color") as? UIColor
+        
+        guard let appDelegate =
+            UIApplication.shared.delegate as? AppDelegate else {
+                return
+        }
+        
+        let managedContext =
+            appDelegate.persistentContainer.viewContext
+        let entity =
+            NSEntityDescription.entity(forEntityName: "Day",
+                                       in: managedContext)!
+        let actionDate = NSManagedObject(entity: entity,
+                                     insertInto: managedContext)
+        actionDate.setValue(selectedDay, forKeyPath: "date")
+        actionDate.setValue([cell.textLabel?.text], forKeyPath: "activities")
+        do {
+           // try managedContext.save()
+        } catch let error as NSError {
+            print("Could not save. \(error), \(error.userInfo)")
+        }
        // mark activity as YES for this day
     }
     
