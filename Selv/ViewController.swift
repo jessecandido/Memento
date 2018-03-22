@@ -12,7 +12,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var calendar: FSCalendar!
-    @IBOutlet weak var animationSwitch: UISwitch!
     
     @IBOutlet weak var calendarHeightConstraint: NSLayoutConstraint!
     
@@ -89,22 +88,16 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     // MARK:- UITableViewDataSource
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return [2,20][section]
+        return [10][section]
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
-            let identifier = ["cell_month", "cell_week"][indexPath.row]
-            let cell = tableView.dequeueReusableCell(withIdentifier: identifier)!
-            return cell
-        } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
-            return cell
-        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
+        return cell
     }
     
     
@@ -114,7 +107,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         tableView.deselectRow(at: indexPath, animated: true)
         if indexPath.section == 0 {
             let scope: FSCalendarScope = (indexPath.row == 0) ? .month : .week
-            self.calendar.setScope(scope, animated: self.animationSwitch.isOn)
+            self.calendar.setScope(scope, animated: true)
         }
     }
     
@@ -126,9 +119,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     @IBAction func toggleClicked(sender: AnyObject) {
         if self.calendar.scope == .month {
-            self.calendar.setScope(.week, animated: self.animationSwitch.isOn)
+            self.calendar.setScope(.week, animated: true)
         } else {
-            self.calendar.setScope(.month, animated: self.animationSwitch.isOn)
+            self.calendar.setScope(.month, animated: true)
         }
     }
     
