@@ -17,33 +17,34 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     //TODO: deselect save
     var activities: [NSManagedObject] = []
     
-    var testingDates = [[Date()], [Date().tomorrow, Date().yesterday]]
-    
-    var isDeselectingAll = false
+    var dictionary = [String: [String]]()
+
+    var selectedDayString = String()
     
     var selectedDay = Date() {
         didSet {
-            isDeselectingAll = true
             tableView.deselectAll()
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = .short
+            let dateNew = dateFormatter.string(from: selectedDay)
+            print("DATEEEE: \(dateNew)")
+            selectedDayString = dateNew
+            let actions = dictionary[dateNew]
+            
             let totalSections = tableView.numberOfSections
             for section in 0 ..< totalSections {
-                    let indexPath = IndexPath(row: 0, section: section)
-                
-                   // let action = activities[indexPath.section]
-                  //  if let datesForThisAction = action.value(forKey: "dates") as? [Date] {
-                    let datesForThisAction = testingDates[section]
-                        let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
-                        for (idx, date) in (datesForThisAction.enumerated()) {
-                            if calendar.isDate(selectedDay, inSameDayAs: date) {
-                                tableView(tableView, didSelectRowAt: indexPath)
-                                print("today at index \(idx)!")
-                            }
-                        }
-                  //  }
-                
+                let indexPath = IndexPath(row: 0, section: section)
+                let cell = tableView.cellForRow(at: indexPath)!
+                let text = cell.textLabel?.text
+                if(actions?.index(of: text!) != nil){
+                    //print (text)
+                    tableView(tableView, didSelectRowAt: indexPath)
+                }
+                    // call the delegate's willSelect, select the row, then call didSelect
             }
-            isDeselectingAll = false
-
+            
+            print(dictionary)
+            
         }
     }
     
@@ -201,15 +202,15 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        print("did select date \(self.dateFormatter.string(from: date))")
+        //print("did select date \(self.dateFormatter.string(from: date))")
         let selectedDates = calendar.selectedDates.map({self.dateFormatter.string(from: $0)})
-        print("selected dates is \(selectedDates)")
+       // print("selected dates is \(selectedDates)")
         if monthPosition == .next || monthPosition == .previous {
             calendar.setCurrentPage(date, animated: true)
         }
         selectedDay = date
         // TODO: get data for the new date
-        //print("SELECTED DAY: \(selectedDay)")
+        
     }
     
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
@@ -233,10 +234,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         cell.textLabel?.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         cell.selectionStyle = .none
         cell.textLabel?.text = action.value(forKey: "name") as? String
-        
-        
-        
-        
         return cell
     }
     
@@ -246,63 +243,24 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)!
         cell.backgroundColor = #colorLiteral(red: 0.8374180198, green: 0.8374378085, blue: 0.8374271393, alpha: 1)
-        
-        if(!isDeselectingAll){
-            let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
-            for (idx, date) in (testingDates[indexPath.section].enumerated()) {
-                if calendar.isDate(selectedDay, inSameDayAs: date) {
-                    testingDates[indexPath.section].remove(at: idx)
-                } else {
-
-                }
-            }
-        }
-        
     }
+    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)!
         let action = activities[indexPath.section]
         cell.backgroundColor = action.value(forKey: "color") as? UIColor
         
-        
-        let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
-        
-        for (idx, date) in (testingDates[indexPath.section].enumerated()) {
-                if calendar.isDate(selectedDay, inSameDayAs: date) {
-                    
-                } else {
-                    testingDates[indexPath.section].append(selectedDay)
-                }
+        var act = [String]()
+        if(dictionary[selectedDayString] != nil){
+            act = dictionary[selectedDayString]!
         }
-        print("dates for this action: \( testingDates[indexPath.section])")
-        
- 
-        /*
-        var selectedActivityDates = [Date]()
-        if let temp = (action.value(forKey: "dates") as? [Date]){
-            selectedActivityDates = temp
+        if let text = cell.textLabel?.text{
+            if(act.index(of: text) == nil){
+                act.append(text)
+            }
+            dictionary[selectedDayString] = act
         }
-        
-        selectedActivityDates.append(selectedDay)
-        activities[indexPath.section].setValue(selectedActivityDates, forKey: "dates")
-        
-        guard let appDelegate =
-            UIApplication.shared.delegate as? AppDelegate else {
-                return
-        }
-        let managedContext =
-            appDelegate.persistentContainer.viewContext
-        do {
-            try managedContext.save()
-        } catch {
-            fatalError("Failure to save context: \(error)")
-        }
-        */
-        
-        
-        
-        
         
        // mark activity as YES for this day
     }
