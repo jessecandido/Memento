@@ -11,41 +11,56 @@ import CoreData
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, FSCalendarDataSource, FSCalendarDelegate, UIGestureRecognizerDelegate {
     
+    
+    //TODO: all deselected when first open the app
+    
+    //TODO: deselect save
     var activities: [NSManagedObject] = []
     
-    var daySelectedActivities = [NSManagedObject]()
+    var testingDates = [[Date()], [Date().tomorrow, Date().yesterday]]
     
-    var dates: [NSManagedObject] = []
+    var isDeselectingAll = false
     
     var selectedDay = Date() {
         didSet {
-            guard let appDelegate =
-                UIApplication.shared.delegate as? AppDelegate else {
-                    return
+            isDeselectingAll = true
+            tableView.deselectAll()
+            let totalSections = tableView.numberOfSections
+            for section in 0 ..< totalSections {
+                    let indexPath = IndexPath(row: 0, section: section)
+                
+                   // let action = activities[indexPath.section]
+                  //  if let datesForThisAction = action.value(forKey: "dates") as? [Date] {
+                    let datesForThisAction = testingDates[section]
+                        let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
+                        for (idx, date) in (datesForThisAction.enumerated()) {
+                            if calendar.isDate(selectedDay, inSameDayAs: date) {
+                                tableView(tableView, didSelectRowAt: indexPath)
+                                print("today at index \(idx)!")
+                            }
+                        }
+                  //  }
+                
             }
-            let managedContext =
-                appDelegate.persistentContainer.viewContext
-            
-            let fetchRequest =
-                NSFetchRequest<NSManagedObject>(entityName: "Day")
-            fetchRequest.predicate = NSPredicate(format: "date == %@", selectedDay as CVarArg)
-            do {
-                daySelectedActivities = try managedContext.fetch(fetchRequest)
-            } catch let error as NSError {
-                print("Could not fetch. \(error), \(error.userInfo)")
-            }
-            print(daySelectedActivities)
+            isDeselectingAll = false
+
         }
     }
-    
-    
-    
-    
     
     @IBAction func addButton(_ sender: Any) {
         let alert = UIAlertController(title: "New Activity",
                                       message: "Add a new activity",
                                       preferredStyle: .alert)
+        let color = UIColor.random
+        let FirstSubview = alert.view.subviews.first
+        let AlertContentView = FirstSubview?.subviews.first
+        for subview in (AlertContentView?.subviews)! {
+            subview.backgroundColor = color
+            subview.layer.cornerRadius = 10
+            subview.alpha = 1
+            subview.layer.borderWidth = 1
+            subview.layer.borderColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)
+        }
         let saveAction = UIAlertAction(title: "Save",
                                        style: .default) {
                                         [unowned self] action in
@@ -53,18 +68,33 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                                             let nameToSave = textField.text else {
                                                 return
                                         }
-                                        self.save(name: nameToSave)
+                                        self.save(name: nameToSave, color: color)
                                         self.tableView.reloadData()
         }
+        saveAction.setValue(UIColor.white, forKey: "titleTextColor")
+        
         let cancelAction = UIAlertAction(title: "Cancel",
-                                         style: .default)
+                                         style: .destructive)
+
+        let myString  = "New Activity"
+        var myMutableString = NSMutableAttributedString()
+        myMutableString = NSMutableAttributedString(string: myString as String)
+        myMutableString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.white, range: NSRange(location:0,length:myString.characters.count))
+        alert.setValue(myMutableString, forKey: "attributedTitle")
+        
+        let message  = "Add a new activity"
+        var messageMutableString = NSMutableAttributedString()
+        messageMutableString = NSMutableAttributedString(string: message as String)
+        messageMutableString.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.white, range: NSRange(location:0,length:message.characters.count))
+        alert.setValue(messageMutableString, forKey: "attributedMessage")
+        
         alert.addTextField()
         alert.addAction(cancelAction)
         alert.addAction(saveAction)
         present(alert, animated: true)
     }
     
-    func save(name: String) {
+    func save(name: String, color: UIColor) {
         guard let appDelegate =
             UIApplication.shared.delegate as? AppDelegate else {
                 return
@@ -77,7 +107,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let action = NSManagedObject(entity: entity,
                                      insertInto: managedContext)
         action.setValue(name, forKeyPath: "name")
-        action.setValue(UIColor.random, forKeyPath: "color")
+        action.setValue(color, forKeyPath: "color")
         do {
             try managedContext.save()
             activities.append(action)
@@ -142,6 +172,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         } catch let error as NSError {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
+        self.tableView.allowsMultipleSelection = true;
     }
     
     deinit {
@@ -202,6 +233,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         cell.textLabel?.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         cell.selectionStyle = .none
         cell.textLabel?.text = action.value(forKey: "name") as? String
+        
+        
+        
+        
         return cell
     }
     
@@ -209,35 +244,66 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     // MARK:- UITableViewDelegate
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        //let cell = tableView.cellForRow(at: indexPath)!
-       // cell.backgroundColor = .blue
+        let cell = tableView.cellForRow(at: indexPath)!
+        cell.backgroundColor = #colorLiteral(red: 0.8374180198, green: 0.8374378085, blue: 0.8374271393, alpha: 1)
+        
+        if(!isDeselectingAll){
+            let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
+            for (idx, date) in (testingDates[indexPath.section].enumerated()) {
+                if calendar.isDate(selectedDay, inSameDayAs: date) {
+                    testingDates[indexPath.section].remove(at: idx)
+                } else {
+
+                }
+            }
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)!
-
         let action = activities[indexPath.section]
         cell.backgroundColor = action.value(forKey: "color") as? UIColor
+        
+        
+        let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
+        
+        for (idx, date) in (testingDates[indexPath.section].enumerated()) {
+                if calendar.isDate(selectedDay, inSameDayAs: date) {
+                    
+                } else {
+                    testingDates[indexPath.section].append(selectedDay)
+                }
+        }
+        print("dates for this action: \( testingDates[indexPath.section])")
+        
+ 
+        /*
+        var selectedActivityDates = [Date]()
+        if let temp = (action.value(forKey: "dates") as? [Date]){
+            selectedActivityDates = temp
+        }
+        
+        selectedActivityDates.append(selectedDay)
+        activities[indexPath.section].setValue(selectedActivityDates, forKey: "dates")
         
         guard let appDelegate =
             UIApplication.shared.delegate as? AppDelegate else {
                 return
         }
-        
         let managedContext =
             appDelegate.persistentContainer.viewContext
-        let entity =
-            NSEntityDescription.entity(forEntityName: "Day",
-                                       in: managedContext)!
-        let actionDate = NSManagedObject(entity: entity,
-                                     insertInto: managedContext)
-        actionDate.setValue(selectedDay, forKeyPath: "date")
-        actionDate.setValue([cell.textLabel?.text], forKeyPath: "activities")
         do {
-           // try managedContext.save()
-        } catch let error as NSError {
-            print("Could not save. \(error), \(error.userInfo)")
+            try managedContext.save()
+        } catch {
+            fatalError("Failure to save context: \(error)")
         }
+        */
+        
+        
+        
+        
+        
        // mark activity as YES for this day
     }
     
@@ -257,6 +323,46 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
 }
 
+
+extension UITableView {
+    func deselectAll(animated: Bool = false) {
+        let totalSections = self.numberOfSections
+        for section in 0 ..< totalSections {
+            let totalRows = self.numberOfRows(inSection: section)
+            for row in 0 ..< totalRows {
+                let indexPath = IndexPath(row: row, section: section)
+                // call the delegate's willSelect, select the row, then call didSelect
+                self.deselectRow(at: indexPath, animated: animated)
+                self.delegate?.tableView?(self, didDeselectRowAt: indexPath)
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+extension Date {
+    var yesterday: Date {
+        return Calendar.current.date(byAdding: .day, value: -1, to: noon)!
+    }
+    var tomorrow: Date {
+        return Calendar.current.date(byAdding: .day, value: 1, to: noon)!
+    }
+    var noon: Date {
+        return Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: self)!
+    }
+    var month: Int {
+        return Calendar.current.component(.month,  from: self)
+    }
+    var isLastDayOfMonth: Bool {
+        return tomorrow.month != month
+    }
+}
 
 extension CGFloat {
     static var random: CGFloat {
