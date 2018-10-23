@@ -16,13 +16,29 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
     @IBOutlet weak var magicView: UIView!
     @IBOutlet weak var calendar: FSCalendar!
     
+    
+    var currentDate = Date() {
+        willSet {
+            //try to get text for note. Is no success, then it is empty
+            note = Note(text: " UHHH " + newValue.description, time: newValue)
+            print(newValue)
+            timeView = TimeIndicatorView(date: newValue)
+            textView.addSubview(timeView)
+            updateTimeIndicatorFrame()
+            textView.setNeedsDisplay()
+            let attrs = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .body)]
+            let attrString = NSAttributedString(string: note.contents, attributes: attrs)
+            textStorage.setAttributedString(attrString)
+        }
+    }
+    
     @IBOutlet weak var calendarHeightConstraint: NSLayoutConstraint!
     
     var textStorage: SyntaxHighlightTextStorage!
     var timeView: TimeIndicatorView!
     
     
-    var note = Note(text: "Shopping List\r\r1. Cheese\r2. Biscuits\r3. Sausages\r4. IMPORTANT Cash for going out!\r5. -potatoes-\r6. A copy of iOS8 by Tutorials\r7. A new iPhone\r8. A present for mum")
+    var note = Note(text: " Helloo!!! ", time: Date())
     
     fileprivate lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -53,10 +69,12 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
             self.calendarHeightConstraint.constant = 400
         }
     
+        createTextView()
         
         let today = Date()
+        currentDate = today
         self.calendar.select(today)
-        updateDate(today)
+       // updateDate(today)
         
         // TODO: get data for today here.
         
@@ -67,12 +85,12 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
         toolbarView.sizeToFit()
         toolbarView.alpha = 0.9
         
-        createTextView()
+        
         
         textView.isScrollEnabled = true
         navigationController?.navigationBar.barStyle = .black
         textView.adjustsFontForContentSizeCategory = true
-        timeView = TimeIndicatorView(date: note.timestamp)
+        
         textView.tintColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
         textView.addSubview(timeView)
         
@@ -142,9 +160,9 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
     
     
     
-    func updateDate(_ date: Date){
-       // dateField.text = date.getMonthName() + " " + date.getDay()
-    }
+//    func updateDate(_ date: Date){
+//       //dateField.text = date.getMonthName() + " " + date.getDay()
+//    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -159,12 +177,15 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
         if monthPosition == .next || monthPosition == .previous {
             calendar.setCurrentPage(date, animated: true)
         }
+        print("selected")
         // TODO: get data for the new date
+        currentDate = date
+        
         
     }
     
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
-        print("\(self.dateFormatter.string(from: calendar.currentPage))")
+       // print("\(self.dateFormatter.string(from: calendar.currentPage))")
     }
     
     
@@ -218,6 +239,15 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
 
 
 
+
+
+
+
+
+
+
+
+
 extension Date {
     
     func getMonthName() -> String {
@@ -236,6 +266,11 @@ extension Date {
     
     
 }
+
+
+
+
+
 
 // MARK: - UITextViewDelegate
 extension NoteViewController: UITextViewDelegate {

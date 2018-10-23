@@ -13,9 +13,9 @@ class Note {
     return lines[0]
   }
   
-  init(text: String) {
+    init(text: String, time: Date) {
     contents = text
-    timestamp = Date()
+    timestamp = time
   }
   
 }

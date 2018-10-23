@@ -24,7 +24,7 @@ class SyntaxHighlightTextStorage: NSTextStorage {
   }
   
   override func replaceCharacters(in range: NSRange, with str: String) {
-    print("replaceCharactersInRange:\(range) withString:\(str)")
+    //print("replaceCharactersInRange:\(range) withString:\(str)")
     
     beginEditing()
     backingStore.replaceCharacters(in: range, with:str)
@@ -33,7 +33,7 @@ class SyntaxHighlightTextStorage: NSTextStorage {
   }
   
   override func setAttributes(_ attrs: [NSAttributedString.Key: Any]?, range: NSRange) {
-    print("setAttributes:\(String(describing: attrs)) range:\(range)")
+    //print("setAttributes:\(String(describing: attrs)) range:\(range)")
     
     beginEditing()
     backingStore.setAttributes(attrs, range: range)
@@ -65,7 +65,7 @@ class SyntaxHighlightTextStorage: NSTextStorage {
         }
       }
       catch {
-        print("An error occurred attempting to locate pattern: \(error.localizedDescription)")
+        //print("An error occurred attempting to locate pattern: \(error.localizedDescription)")
       }
     }
   }
