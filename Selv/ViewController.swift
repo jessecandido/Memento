@@ -11,13 +11,14 @@ import CoreData
 
 class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate, UIGestureRecognizerDelegate {
     
-    var textView: UITextView!
+    var textView: UITextViewFixed!
     @IBOutlet var toolbarView: UIView!
     @IBOutlet weak var magicView: UIView!
     @IBOutlet weak var calendar: FSCalendar!
     
     var context: NSManagedObjectContext!
     
+    @IBOutlet weak var dateLabel: UILabel!
     @IBAction func boldText(_ sender: Any) {
         
         
@@ -51,17 +52,24 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
                 }
                 if result.count == 0 {
                     print ("nothing here")
-                    note = Note(text: " ", time: newValue)
-                    attrs = NSAttributedString(string: " ", attributes: [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .body)])
+                    note = Note(text: "", time: newValue)
+                    //let attstr = NSAttributedString(string: newValue.getMonthName() + " " + newValue.getDay() + "", attributes: [NSAttributedString.Key.font : UIFont.preferredFont(forTextStyle: .largeTitle)])
+                   
+                    
+                    attrs = NSAttributedString(string: "", attributes: [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .body)])
                     textStorage.setAttributedString(attrs)
                 }
             } catch {
                 print("Failed")
             }
+
+            
+            dateLabel.text = newValue.getMonthName() + " " + newValue.getDay()
+            dateLabel.setNeedsDisplay()
            // print(newValue)
-            timeView = TimeIndicatorView(date: newValue)
-            textView.addSubview(timeView)
-            updateTimeIndicatorFrame()
+           // timeView = TimeIndicatorView(date: newValue)
+           // textView.addSubview(timeView)
+          //  updateTimeIndicatorFrame()
             textView.setNeedsDisplay()
             
         }
@@ -70,7 +78,7 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
     @IBOutlet weak var calendarHeightConstraint: NSLayoutConstraint!
     
     var textStorage: NSTextStorage!//SyntaxHighlightTextStorage!
-    var timeView: TimeIndicatorView!
+    //var timeView: TimeIndicatorView!
     
     
     var note: Note!
@@ -133,10 +141,9 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
         
         textView.isScrollEnabled = true
         navigationController?.navigationBar.barStyle = .black
-        
         textView.tintColor = #colorLiteral(red: 1, green: 0.4932718873, blue: 0.4739984274, alpha: 1)
         textView.inputAccessoryView = toolbarView
-
+        textView.font = UIFont.preferredFont(forTextStyle: .body)
         NotificationCenter.default.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
 
@@ -146,17 +153,16 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
     }
     
     override func viewDidLayoutSubviews() {
-        updateTimeIndicatorFrame()
+       // updateTimeIndicatorFrame()
         //textStorage.update()
         print("updated sotrage")
     }
     
-    func updateTimeIndicatorFrame() {
-        timeView.updateSize()
-        timeView.frame = timeView.frame.offsetBy(dx: textView.frame.width - timeView.frame.width, dy: 0)
-        let exclusionPath = timeView.curvePathWithOrigin(timeView.center)
-        textView.textContainer.exclusionPaths = [exclusionPath]
-    }
+//    func updateTimeIndicatorFrame() {
+//        timeView.updateSize()
+//        timeView.frame = timeView.frame.offsetBy(dx: textView.frame.width - timeView.frame.width, dy: 0)
+//
+//    }
     
     
     @objc func adjustForKeyboard(notification: Notification) {
@@ -248,7 +254,7 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
         textStorage.addLayoutManager(layoutManager)
         
         // 4
-        textView = UITextView(frame: newTextViewRect, textContainer: container)
+        textView = UITextViewFixed(frame: newTextViewRect, textContainer: container)
         textView.delegate = self
         textView.allowsEditingTextAttributes = true
         magicView.addSubview(textView)
@@ -358,4 +364,26 @@ extension UIFont {
         }
     }
     
+}
+
+
+func + (left: NSAttributedString, right: NSAttributedString) -> NSAttributedString
+{
+    let result = NSMutableAttributedString()
+    result.append(left)
+    result.append(right)
+    return result
+}
+
+
+
+@IBDesignable class UITextViewFixed: UITextView {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        setup()
+    }
+    func setup() {
+        textContainerInset = UIEdgeInsets.zero
+        textContainer.lineFragmentPadding = 0
+    }
 }
