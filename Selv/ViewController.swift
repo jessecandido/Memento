@@ -58,7 +58,6 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
             } catch {
                 print("Failed")
             }
-            
            // print(newValue)
             timeView = TimeIndicatorView(date: newValue)
             textView.addSubview(timeView)
@@ -134,7 +133,6 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
         
         textView.isScrollEnabled = true
         navigationController?.navigationBar.barStyle = .black
-        textView.adjustsFontForContentSizeCategory = true
         
         textView.tintColor = #colorLiteral(red: 1, green: 0.4932718873, blue: 0.4739984274, alpha: 1)
         textView.inputAccessoryView = toolbarView
@@ -143,7 +141,8 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
         NotificationCenter.default.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
 
         currentDate = calendar.selectedDate!
-        
+        textView.adjustsFontForContentSizeCategory = true
+
     }
     
     override func viewDidLayoutSubviews() {
