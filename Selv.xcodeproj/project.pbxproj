@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B2173383217FB5220051A465 /* OpenDyslexicAlta-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = B2173379217FB5210051A465 /* OpenDyslexicAlta-Regular.otf */; };
+		B2173384217FB5220051A465 /* OpenDyslexic-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = B217337A217FB5210051A465 /* OpenDyslexic-Italic.otf */; };
+		B2173385217FB5220051A465 /* OpenDyslexicAlta-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = B217337B217FB5220051A465 /* OpenDyslexicAlta-Italic.otf */; };
+		B2173386217FB5220051A465 /* OpenDyslexicMono-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = B217337C217FB5220051A465 /* OpenDyslexicMono-Regular.otf */; };
+		B2173387217FB5220051A465 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = B217337D217FB5220051A465 /* README.txt */; };
+		B2173388217FB5220051A465 /* OpenDyslexicAlta-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = B217337E217FB5220051A465 /* OpenDyslexicAlta-Bold.otf */; };
+		B2173389217FB5220051A465 /* OpenDyslexic-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = B217337F217FB5220051A465 /* OpenDyslexic-Regular.otf */; };
+		B217338A217FB5220051A465 /* OpenDyslexic-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = B2173380217FB5220051A465 /* OpenDyslexic-BoldItalic.otf */; };
+		B217338B217FB5220051A465 /* OpenDyslexicAlta-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = B2173381217FB5220051A465 /* OpenDyslexicAlta-BoldItalic.otf */; };
+		B217338C217FB5220051A465 /* OpenDyslexic-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = B2173382217FB5220051A465 /* OpenDyslexic-Bold.otf */; };
 		B28427AC217ECFA1008F8C21 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28427A8217ECFA0008F8C21 /* Note.swift */; };
 		B28427AD217ECFA1008F8C21 /* SyntaxHighlightTextStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28427A9217ECFA0008F8C21 /* SyntaxHighlightTextStorage.swift */; };
 		B28427AF217ECFA1008F8C21 /* TimeIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28427AB217ECFA1008F8C21 /* TimeIndicatorView.swift */; };
@@ -35,6 +45,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B2173379217FB5210051A465 /* OpenDyslexicAlta-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenDyslexicAlta-Regular.otf"; sourceTree = "<group>"; };
+		B217337A217FB5210051A465 /* OpenDyslexic-Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenDyslexic-Italic.otf"; sourceTree = "<group>"; };
+		B217337B217FB5220051A465 /* OpenDyslexicAlta-Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenDyslexicAlta-Italic.otf"; sourceTree = "<group>"; };
+		B217337C217FB5220051A465 /* OpenDyslexicMono-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenDyslexicMono-Regular.otf"; sourceTree = "<group>"; };
+		B217337D217FB5220051A465 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		B217337E217FB5220051A465 /* OpenDyslexicAlta-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenDyslexicAlta-Bold.otf"; sourceTree = "<group>"; };
+		B217337F217FB5220051A465 /* OpenDyslexic-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenDyslexic-Regular.otf"; sourceTree = "<group>"; };
+		B2173380217FB5220051A465 /* OpenDyslexic-BoldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenDyslexic-BoldItalic.otf"; sourceTree = "<group>"; };
+		B2173381217FB5220051A465 /* OpenDyslexicAlta-BoldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenDyslexicAlta-BoldItalic.otf"; sourceTree = "<group>"; };
+		B2173382217FB5220051A465 /* OpenDyslexic-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenDyslexic-Bold.otf"; sourceTree = "<group>"; };
 		B28427A8217ECFA0008F8C21 /* Note.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		B28427A9217ECFA0008F8C21 /* SyntaxHighlightTextStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyntaxHighlightTextStorage.swift; sourceTree = "<group>"; };
 		B28427AB217ECFA1008F8C21 /* TimeIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeIndicatorView.swift; sourceTree = "<group>"; };
@@ -93,6 +113,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B217338D217FB52B0051A465 /* Open Dyslexic */ = {
+			isa = PBXGroup;
+			children = (
+				B2173382217FB5220051A465 /* OpenDyslexic-Bold.otf */,
+				B2173380217FB5220051A465 /* OpenDyslexic-BoldItalic.otf */,
+				B217337A217FB5210051A465 /* OpenDyslexic-Italic.otf */,
+				B217337F217FB5220051A465 /* OpenDyslexic-Regular.otf */,
+				B217337E217FB5220051A465 /* OpenDyslexicAlta-Bold.otf */,
+				B2173381217FB5220051A465 /* OpenDyslexicAlta-BoldItalic.otf */,
+				B217337B217FB5220051A465 /* OpenDyslexicAlta-Italic.otf */,
+				B2173379217FB5210051A465 /* OpenDyslexicAlta-Regular.otf */,
+				B217337C217FB5220051A465 /* OpenDyslexicMono-Regular.otf */,
+				B217337D217FB5220051A465 /* README.txt */,
+			);
+			path = "Open Dyslexic";
+			sourceTree = "<group>";
+		};
 		B2993F0820637970000A6049 = {
 			isa = PBXGroup;
 			children = (
@@ -124,6 +161,7 @@
 				B2993F2320637971000A6049 /* Info.plist */,
 				B2993F2020637971000A6049 /* LaunchScreen.storyboard */,
 				B2993F1B20637970000A6049 /* Selv.xcdatamodeld */,
+				B217338D217FB52B0051A465 /* Open Dyslexic */,
 			);
 			path = Selv;
 			sourceTree = "<group>";
@@ -226,9 +264,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B2173385217FB5220051A465 /* OpenDyslexicAlta-Italic.otf in Resources */,
+				B2173384217FB5220051A465 /* OpenDyslexic-Italic.otf in Resources */,
 				B2993F2220637971000A6049 /* LaunchScreen.storyboard in Resources */,
+				B2173386217FB5220051A465 /* OpenDyslexicMono-Regular.otf in Resources */,
+				B217338C217FB5220051A465 /* OpenDyslexic-Bold.otf in Resources */,
 				B2993F1F20637971000A6049 /* Assets.xcassets in Resources */,
+				B2173389217FB5220051A465 /* OpenDyslexic-Regular.otf in Resources */,
 				B2993F1A20637970000A6049 /* Main.storyboard in Resources */,
+				B2173387217FB5220051A465 /* README.txt in Resources */,
+				B2173388217FB5220051A465 /* OpenDyslexicAlta-Bold.otf in Resources */,
+				B2173383217FB5220051A465 /* OpenDyslexicAlta-Regular.otf in Resources */,
+				B217338A217FB5220051A465 /* OpenDyslexic-BoldItalic.otf in Resources */,
+				B217338B217FB5220051A465 /* OpenDyslexicAlta-BoldItalic.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

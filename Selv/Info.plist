@@ -47,5 +47,17 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>OpenDyslexic-Bold.otf</string>
+		<string>OpenDyslexic-Regular.otf</string>
+		<string>OpenDyslexic-BoldItalic.otf</string>
+		<string>OpenDyslexic-Italic.otf</string>
+		<string>OpenDyslexicAlta-Bold.otf</string>
+		<string>OpenDyslexicAlta-BoldItalic.otf</string>
+		<string>OpenDyslexicAlta-Italic.otf</string>
+		<string>OpenDyslexicAlta-Regular.otf</string>
+		<string>OpenDyslexicMono-Regular.otf</string>
+	</array>
 </dict>
 </plist>

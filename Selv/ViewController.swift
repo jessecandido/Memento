@@ -120,7 +120,6 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
             self.calendarHeightConstraint.constant = 400
         }
     
-        
         createTextView()
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -143,13 +142,23 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
         navigationController?.navigationBar.barStyle = .black
         textView.tintColor = #colorLiteral(red: 1, green: 0.4932718873, blue: 0.4739984274, alpha: 1)
         textView.inputAccessoryView = toolbarView
-        textView.font = UIFont.preferredFont(forTextStyle: .body)
+        
+        let customFont = UIFont(name: "OpenDyslexic-Regular", size: UIFont.labelFontSize)
+        textView.font = UIFontMetrics.default.scaledFont(for: customFont!)
+        textView.adjustsFontForContentSizeCategory = true
+        
+        
         NotificationCenter.default.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
 
         currentDate = calendar.selectedDate!
-        textView.adjustsFontForContentSizeCategory = true
-
+        let dateLabelFont = UIFont(name: "OpenDyslexicAlta-Bold", size: 26)
+        dateLabel.font = UIFontMetrics.default.scaledFont(for: dateLabelFont!)
+        dateLabel.adjustsFontForContentSizeCategory = true
+//        for family in UIFont.familyNames.sorted() {
+//            let names = UIFont.fontNames(forFamilyName: family)
+//            print("Family: \(family) Font names: \(names)")
+//        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -345,10 +354,7 @@ extension UIFont {
         if isBold {
             return self
         } else {
-            var symTraits = fontDescriptor.symbolicTraits
-            symTraits.insert([.traitBold])
-            let fontDescriptorVar = fontDescriptor.withSymbolicTraits(symTraits)
-            return UIFont(descriptor: fontDescriptorVar!, size: 0)
+            return UIFont(name: "OpenDyslexic-Bold", size: self.pointSize)!
         }
     }
     
@@ -357,10 +363,7 @@ extension UIFont {
         if !isBold {
             return self
         } else {
-            var symTraits = fontDescriptor.symbolicTraits
-            symTraits.remove([.traitBold])
-            let fontDescriptorVar = fontDescriptor.withSymbolicTraits(symTraits)
-            return UIFont(descriptor: fontDescriptorVar!, size: 0)
+            return UIFont(name: "OpenDyslexic-Regular", size: self.pointSize)!
         }
     }
     
