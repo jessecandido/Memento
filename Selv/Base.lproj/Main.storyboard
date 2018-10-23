@@ -123,6 +123,15 @@
                                 <action selector="doneButton:" destination="Hrc-wy-oIK" eventType="touchUpInside" id="YbC-F5-UB4"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kc1-qz-ibm">
+                            <rect key="frame" x="24" y="10" width="30" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                            <state key="normal" title="B"/>
+                            <connections>
+                                <action selector="boldText:" destination="Hrc-wy-oIK" eventType="touchUpInside" id="SHP-37-jj1"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" red="0.0" green="0.56284224989999998" blue="0.31881666180000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <viewLayoutGuide key="safeArea" id="zwn-BY-D3N"/>

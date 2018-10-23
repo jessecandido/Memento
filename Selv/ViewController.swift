@@ -18,6 +18,19 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
     
     var context: NSManagedObjectContext!
     
+    @IBAction func boldText(_ sender: Any) {
+        
+        
+        let range = textView.selectedRange
+        
+        let string = NSMutableAttributedString(attributedString:
+            textView.attributedText)
+        let font = textView.font?.toggleBold()
+        string.addAttributes([.font: font!], range: range)
+        textView.attributedText = string
+        textView.selectedRange = range
+    }
+    
     var currentDate = Date() {
         willSet {
             print("current date updates: + \(newValue)")
@@ -111,12 +124,7 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
         context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         
         let today = Date()
-        
         self.calendar.select(today)
-       // print("today: \(today) XXXXXXXXX calendar: \(calendar.selectedDate)")
-       // updateDate(today)
-        
-        // TODO: get data for today here.
         
         self.view.addGestureRecognizer(self.scopeGesture)
         self.calendar.scope = .week
@@ -131,20 +139,11 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
         navigationController?.navigationBar.barStyle = .black
         textView.adjustsFontForContentSizeCategory = true
         
-        textView.tintColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
-        
-        //    NotificationCenter.default.addObserver(self,
-        //                                           selector: #selector(keyboardDidShow),
-        //                                           name: UIResponder.keyboardDidShowNotification,
-        //                                           object: nil)
-        //    NotificationCenter.default.addObserver(self,
-        //                                           selector: #selector(keyboardDidHide),
-        //                                           name: UIResponder.keyboardDidHideNotification,
-        //                                           object: nil)
+        textView.tintColor = #colorLiteral(red: 1, green: 0.4932718873, blue: 0.4739984274, alpha: 1)
         textView.inputAccessoryView = toolbarView
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
         
         currentDate = calendar.selectedDate!
         
@@ -198,12 +197,6 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
         updateTextViewSizeForKeyboardHeight(keyboardHeight: 0)
     }
     
-    
-    
-//    func updateDate(_ date: Date){
-//       //dateField.text = date.getMonthName() + " " + date.getDay()
-//    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
@@ -218,26 +211,19 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
             calendar.setCurrentPage(date, animated: true)
         }
         textView.endEditing(true)
-        //print("selected")
-        // TODO: get data for the new date
         currentDate = date
-        
-        
     }
     
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
-       // print("\(self.dateFormatter.string(from: calendar.currentPage))")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         NotificationCenter.default.removeObserver(self, name: UIApplication.willTerminateNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
-        
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
 
-    
-    // MARK:- Target actions
-    
     @IBAction func toggleClicked(sender: AnyObject) {
         if self.calendar.scope == .month {
             self.calendar.setScope(.week, animated: true)
@@ -268,6 +254,7 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
         // 4
         textView = UITextView(frame: newTextViewRect, textContainer: container)
         textView.delegate = self
+        textView.allowsEditingTextAttributes = true
         magicView.addSubview(textView)
         
         // 5
@@ -336,4 +323,42 @@ extension NoteViewController: UITextViewDelegate {
         }
         
     }
+}
+
+
+extension UIFont {
+    
+    func toggleBold () -> UIFont {
+        return self.isBold ? removeBold() : setBold()
+    }
+    
+    var isBold: Bool
+    {
+        return fontDescriptor.symbolicTraits.contains(.traitBold)
+    }
+    
+    func setBold() -> UIFont
+    {
+        if isBold {
+            return self
+        } else {
+            var symTraits = fontDescriptor.symbolicTraits
+            symTraits.insert([.traitBold])
+            let fontDescriptorVar = fontDescriptor.withSymbolicTraits(symTraits)
+            return UIFont(descriptor: fontDescriptorVar!, size: 0)
+        }
+    }
+    
+    func removeBold()-> UIFont
+    {
+        if !isBold {
+            return self
+        } else {
+            var symTraits = fontDescriptor.symbolicTraits
+            symTraits.remove([.traitBold])
+            let fontDescriptorVar = fontDescriptor.withSymbolicTraits(symTraits)
+            return UIFont(descriptor: fontDescriptorVar!, size: 0)
+        }
+    }
+    
 }

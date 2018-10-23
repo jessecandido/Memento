@@ -42,8 +42,8 @@ class SyntaxHighlightTextStorage: NSTextStorage {
   }
   
   func applyStylesToRange(searchRange: NSRange) {
-    let normalAttrs = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .body)]
-    addAttributes(normalAttrs, range: searchRange)
+   // let normalAttrs = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .body)]
+   // addAttributes(normalAttrs, range: searchRange)
     
     // iterate over each replacement
     for (pattern, attributes) in replacements {
@@ -59,7 +59,7 @@ class SyntaxHighlightTextStorage: NSTextStorage {
             // reset the style to the original
             let maxRange = matchRange.location + matchRange.length
             if maxRange + 1 < length {
-              addAttributes(normalAttrs, range: NSMakeRange(maxRange, 1))
+              //addAttributes(normalAttrs, range: NSMakeRange(maxRange, 1))
             }
           }
         }
@@ -109,12 +109,13 @@ class SyntaxHighlightTextStorage: NSTextStorage {
     
     // 3. construct a dictionary of replacements based on regexes
     replacements = [
-      "(\\*\\w+(\\s\\w+)*\\*)": boldAttributes,
+      "(\\*\\w+(\\s+\\w+)*\\*)": boldAttributes, 
       "(_\\w+(\\s\\w+)*_)": italicAttributes,
       "([0-9]+\\.)\\s": boldAttributes,
+      "(#H1\\w+)": boldAttributes,
       "(-\\w+(\\s\\w+)*-)": strikeThroughAttributes,
       "(~\\w+(\\s\\w+)*~)": scriptAttributes,
-      "\\s([A-Z]{2,})\\s": redTextAttributes
+      //"\\s([A-Z]{2,})\\s": redTextAttributes
     ]
   }
   
