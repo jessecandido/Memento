@@ -70,7 +70,7 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
     
     @IBOutlet weak var calendarHeightConstraint: NSLayoutConstraint!
     
-    var textStorage: SyntaxHighlightTextStorage!
+    var textStorage: NSTextStorage!//SyntaxHighlightTextStorage!
     var timeView: TimeIndicatorView!
     
     
@@ -148,7 +148,7 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
     
     override func viewDidLayoutSubviews() {
         updateTimeIndicatorFrame()
-        textStorage.update()
+        //textStorage.update()
         print("updated sotrage")
     }
     
@@ -233,7 +233,7 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
         // 1
        // let attrs = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .body)]
        // let attrString = NSAttributedString(string: note.contents, attributes: attrs)
-        textStorage = SyntaxHighlightTextStorage()
+        textStorage = NSTextStorage() //SyntaxHighlightTextStorage()
       //  textStorage.append(attrString)
         
         let newTextViewRect = magicView.bounds
