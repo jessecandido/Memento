@@ -34,6 +34,9 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
     var currentDate = Date() {
         willSet {
             print("current date updates: + \(newValue)")
+            
+            var attrs = NSAttributedString()
+            
             let request = NSFetchRequest<NSFetchRequestResult>(entityName: "NoteEntry")
             request.predicate = NSPredicate(format: "timestamp = %@", newValue as CVarArg)
             request.returnsObjectsAsFaults = false
@@ -42,14 +45,14 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
                 for data in result as! [NSManagedObject] {
                     //print(data.value(forKey: "timestamp") as! String)
                     note = Note(text: data.value(forKey: "contents") as! String, time: newValue)
+                    attrs = data.value(forKey: "attributes") as! NSAttributedString
                 }
                 if result.count == 0 {
                     print ("nothing here")
                     note = Note(text: " ", time: newValue)
+                    attrs = NSAttributedString(string: note.contents, attributes: [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .body)])
                 }
-                
             } catch {
-                
                 print("Failed")
             }
             
@@ -65,9 +68,7 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
             textView.addSubview(timeView)
             updateTimeIndicatorFrame()
             textView.setNeedsDisplay()
-            let attrs = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .body)]
-            let attrString = NSAttributedString(string: note.contents, attributes: attrs)
-            textStorage.setAttributedString(attrString)
+            textStorage.setAttributedString(attrs)
         }
     }
     
@@ -315,6 +316,8 @@ extension NoteViewController: UITextViewDelegate {
         let newNote = NSManagedObject(entity: entity!, insertInto: context)
         newNote.setValue(textView.text, forKey: "contents")
         newNote.setValue(currentDate, forKey: "timestamp")
+        newNote.setValue(textView.attributedText, forKey: "attributes")
+        
         
         do {
             try context.save()
