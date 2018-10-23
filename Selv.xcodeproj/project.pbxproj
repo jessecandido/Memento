@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B28427AC217ECFA1008F8C21 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28427A8217ECFA0008F8C21 /* Note.swift */; };
+		B28427AD217ECFA1008F8C21 /* SyntaxHighlightTextStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28427A9217ECFA0008F8C21 /* SyntaxHighlightTextStorage.swift */; };
+		B28427AF217ECFA1008F8C21 /* TimeIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28427AB217ECFA1008F8C21 /* TimeIndicatorView.swift */; };
 		B2993F1520637970000A6049 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2993F1420637970000A6049 /* AppDelegate.swift */; };
 		B2993F1720637970000A6049 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2993F1620637970000A6049 /* ViewController.swift */; };
 		B2993F1A20637970000A6049 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2993F1820637970000A6049 /* Main.storyboard */; };
@@ -32,6 +35,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B28427A8217ECFA0008F8C21 /* Note.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
+		B28427A9217ECFA0008F8C21 /* SyntaxHighlightTextStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyntaxHighlightTextStorage.swift; sourceTree = "<group>"; };
+		B28427AB217ECFA1008F8C21 /* TimeIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeIndicatorView.swift; sourceTree = "<group>"; };
 		B2993F1120637970000A6049 /* Slv.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Slv.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2993F1420637970000A6049 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B2993F1620637970000A6049 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -109,11 +115,14 @@
 			children = (
 				B2993F1420637970000A6049 /* AppDelegate.swift */,
 				B2993F1620637970000A6049 /* ViewController.swift */,
+				B28427A8217ECFA0008F8C21 /* Note.swift */,
+				B28427A9217ECFA0008F8C21 /* SyntaxHighlightTextStorage.swift */,
+				B28427AB217ECFA1008F8C21 /* TimeIndicatorView.swift */,
 				B2993F1820637970000A6049 /* Main.storyboard */,
 				B2993F1E20637971000A6049 /* Assets.xcassets */,
-				B2993F2020637971000A6049 /* LaunchScreen.storyboard */,
 				B2993F5E20637C4B000A6049 /* Objc-Bridge-Header.h */,
 				B2993F2320637971000A6049 /* Info.plist */,
+				B2993F2020637971000A6049 /* LaunchScreen.storyboard */,
 				B2993F1B20637970000A6049 /* Selv.xcdatamodeld */,
 			);
 			path = Selv;
@@ -234,17 +243,20 @@
 				B2993F51206379C4000A6049 /* FSCalendarHeaderView.m in Sources */,
 				B2993F54206379C4000A6049 /* FSCalendarDelegationProxy.m in Sources */,
 				B2993F55206379C4000A6049 /* FSCalendar.m in Sources */,
+				B28427AF217ECFA1008F8C21 /* TimeIndicatorView.swift in Sources */,
 				B2993F53206379C4000A6049 /* FSCalendarWeekdayView.m in Sources */,
 				B2993F4F206379C4000A6049 /* FSCalendarCollectionViewLayout.m in Sources */,
 				B2993F5A206379C4000A6049 /* FSCalendarStickyHeader.m in Sources */,
 				B2993F5D206379C4000A6049 /* FSCalendarCollectionView.m in Sources */,
 				B2993F1D20637970000A6049 /* Selv.xcdatamodeld in Sources */,
+				B28427AD217ECFA1008F8C21 /* SyntaxHighlightTextStorage.swift in Sources */,
 				B2993F4E206379C4000A6049 /* FSCalendarCalculator.m in Sources */,
 				B2993F58206379C4000A6049 /* FSCalendarCell.m in Sources */,
 				B2993F5C206379C4000A6049 /* FSCalendarConstants.m in Sources */,
 				B2993F59206379C4000A6049 /* FSCalendarExtensions.m in Sources */,
 				B2993F50206379C4000A6049 /* FSCalendarTransitionCoordinator.m in Sources */,
 				B2993F1720637970000A6049 /* ViewController.swift in Sources */,
+				B28427AC217ECFA1008F8C21 /* Note.swift in Sources */,
 				B2993F5B206379C4000A6049 /* FSCalendarScopeHandle.m in Sources */,
 				B2993F1520637970000A6049 /* AppDelegate.swift in Sources */,
 				B2993F4D206379C4000A6049 /* FSCalendarDelegationFactory.m in Sources */,
