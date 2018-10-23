@@ -36,7 +36,7 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
         willSet {
             print("current date updates: + \(newValue)")
             
-            var attrs = NSAttributedString()
+            var attrs = NSMutableAttributedString()
             
             let request = NSFetchRequest<NSFetchRequestResult>(entityName: "NoteEntry")
             request.predicate = NSPredicate(format: "timestamp = %@", newValue as CVarArg)
@@ -46,7 +46,12 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
                 for data in result as! [NSManagedObject] {
                     print("got data")
                     //print(data.value(forKey: "timestamp") as! String)
-                    attrs = data.value(forKey: "attributes") as! NSAttributedString
+                    attrs = data.value(forKey: "attributes") as! NSMutableAttributedString
+                    
+                    let customFont = UIFont(name: "AvenirNext-Regular", size: UIFont.labelFontSize)
+                    attrs.addAttribute(NSMutableAttributedString.Key.font, value: UIFontMetrics.default.scaledFont(for: customFont!), range: NSRange(location:0,length:attrs.string.count))
+
+                    
                     note = Note(text: attrs.string, time: newValue)
                     textStorage.setAttributedString(attrs)
                 }
@@ -55,8 +60,9 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
                     note = Note(text: "", time: newValue)
                     //let attstr = NSAttributedString(string: newValue.getMonthName() + " " + newValue.getDay() + "", attributes: [NSAttributedString.Key.font : UIFont.preferredFont(forTextStyle: .largeTitle)])
                    
-                    
-                    attrs = NSAttributedString(string: "", attributes: [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .body)])
+                    let customFont = UIFont(name: "AvenirNext-Regular", size: UIFont.labelFontSize)
+                
+                    attrs = NSMutableAttributedString(string: "", attributes: [NSMutableAttributedString.Key.font: UIFontMetrics.default.scaledFont(for: customFont!)])
                     textStorage.setAttributedString(attrs)
                 }
             } catch {
@@ -143,8 +149,9 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
         textView.tintColor = #colorLiteral(red: 1, green: 0.4932718873, blue: 0.4739984274, alpha: 1)
         textView.inputAccessoryView = toolbarView
         
-        let customFont = UIFont(name: "OpenDyslexic-Regular", size: UIFont.labelFontSize)
+        let customFont = UIFont(name: "AvenirNext-Regular", size: UIFont.labelFontSize)
         textView.font = UIFontMetrics.default.scaledFont(for: customFont!)
+        textView.textColor = #colorLiteral(red: 0.370555222, green: 0.3705646992, blue: 0.3705595732, alpha: 1)
         textView.adjustsFontForContentSizeCategory = true
         
         
@@ -152,7 +159,7 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
         NotificationCenter.default.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
 
         currentDate = calendar.selectedDate!
-        let dateLabelFont = UIFont(name: "OpenDyslexicAlta-Bold", size: 26)
+        let dateLabelFont = UIFont(name: "AvenirNext-DemiBold", size: 26)
         dateLabel.font = UIFontMetrics.default.scaledFont(for: dateLabelFont!)
         dateLabel.adjustsFontForContentSizeCategory = true
 //        for family in UIFont.familyNames.sorted() {
@@ -325,7 +332,7 @@ extension NoteViewController: UITextViewDelegate {
         let entity = NSEntityDescription.entity(forEntityName: "NoteEntry", in: context)
         let newNote = NSManagedObject(entity: entity!, insertInto: context)
         newNote.setValue(currentDate, forKey: "timestamp")
-        newNote.setValue(textView.attributedText, forKey: "attributes")
+        newNote.setValue(NSMutableAttributedString(attributedString: textView.attributedText), forKey: "attributes")
         
         
         do {
@@ -354,7 +361,7 @@ extension UIFont {
         if isBold {
             return self
         } else {
-            return UIFont(name: "OpenDyslexic-Bold", size: self.pointSize)!
+            return UIFont(name: "AvenirNext-Bold", size: self.pointSize)!
         }
     }
     
@@ -363,7 +370,7 @@ extension UIFont {
         if !isBold {
             return self
         } else {
-            return UIFont(name: "OpenDyslexic-Regular", size: self.pointSize)!
+            return UIFont(name: "AvenirNext-Regular", size: self.pointSize)!
         }
     }
     
