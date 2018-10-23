@@ -30,14 +30,14 @@
     self = [super init];
     if (self) {
         
-        _titleFont = [UIFont systemFontOfSize:FSCalendarStandardTitleTextSize];
+        _titleFont = [UIFont fontWithName:@"AvenirNext-Regular" size: FSCalendarStandardTitleTextSize];
         _subtitleFont = [UIFont systemFontOfSize:FSCalendarStandardSubtitleTextSize];
-        _weekdayFont = [UIFont systemFontOfSize:FSCalendarStandardWeekdayTextSize];
-        _headerTitleFont = [UIFont systemFontOfSize:FSCalendarStandardHeaderTextSize];
+        _weekdayFont = [UIFont fontWithName:@"AvenirNext-Regular" size: FSCalendarStandardWeekdayTextSize];
+        _headerTitleFont = [UIFont fontWithName:@"AvenirNext-Regular" size: FSCalendarStandardHeaderTextSize];
         
         _headerTitleColor = FSCalendarStandardTitleTextColor;
         _headerDateFormat = @"MMMM yyyy";
-        _headerMinimumDissolvedAlpha = 0.2;
+        _headerMinimumDissolvedAlpha = 0.15;
         _weekdayTextColor = FSCalendarStandardTitleTextColor;
         _caseOptions = FSCalendarCaseOptionsHeaderUsesDefaultCase|FSCalendarCaseOptionsWeekdayUsesDefaultCase;
         
