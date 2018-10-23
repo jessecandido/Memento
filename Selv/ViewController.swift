@@ -32,6 +32,41 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
         textView.selectedRange = range
     }
     
+
+    @IBAction func italicText(_ sender: Any) {
+        let range = textView.selectedRange
+        let string = NSMutableAttributedString(attributedString:
+            textView.attributedText)
+        let font = textView.font?.toggleItalic()
+        string.addAttributes([.font: font!], range: range)
+        textView.attributedText = string
+        textView.selectedRange = range
+    }
+    
+    @IBAction func underlineText(_ sender: Any) {
+        
+        let range = textView.selectedRange
+        let string = NSMutableAttributedString(attributedString:
+            textView.attributedText)
+        
+        
+        string.enumerateAttribute(NSAttributedString.Key.underlineStyle, in: range, options: .longestEffectiveRangeNotRequired) { attribute, range, pointer in
+            if attribute != nil {
+                string.removeAttribute(NSAttributedString.Key.underlineStyle, range: range)
+            } else {
+                string.addAttributes([NSAttributedString.Key.underlineStyle : NSUnderlineStyle.single.rawValue], range: range)
+            }
+        }
+        
+        
+        
+        
+        textView.attributedText = string
+        textView.selectedRange = range
+        
+       
+    }
+    
     var currentDate = Date() {
         willSet {
             print("current date updates: + \(newValue)")
@@ -48,12 +83,24 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
                     //print(data.value(forKey: "timestamp") as! String)
                     attrs = data.value(forKey: "attributes") as! NSMutableAttributedString
                     
-                    let customFont = UIFont(name: "AvenirNext-Regular", size: UIFont.labelFontSize)
-                    attrs.addAttribute(NSMutableAttributedString.Key.font, value: UIFontMetrics.default.scaledFont(for: customFont!), range: NSRange(location:0,length:attrs.string.count))
+//                    let customFont = UIFont(name: "AvenirNext-Regular", size: UIFont.labelFontSize)
+//
 
+//                    var range = NSRange(location: 0, length: attrs.length)
+//                    if let font = attrs.attribute(NSAttributedString.Key.font, at: 0, effectiveRange: &range) as? UIFont {
+//                        attrs.addAttribute(NSMutableAttributedString.Key.font, value: UIFontMetrics.default.scaledFont(for: font), range: NSRange(location:0,length:attrs.length))
+//                    }
+                        
+                        
+                    
+                        
+                    
+                    
+                    
                     
                     note = Note(text: attrs.string, time: newValue)
                     textStorage.setAttributedString(attrs)
+
                 }
                 if result.count == 0 {
                     print ("nothing here")
@@ -64,6 +111,7 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
                 
                     attrs = NSMutableAttributedString(string: "", attributes: [NSMutableAttributedString.Key.font: UIFontMetrics.default.scaledFont(for: customFont!)])
                     textStorage.setAttributedString(attrs)
+                    
                 }
             } catch {
                 print("Failed")
@@ -345,36 +393,91 @@ extension NoteViewController: UITextViewDelegate {
 }
 
 
-extension UIFont {
+extension UIFont{
     
     func toggleBold () -> UIFont {
-        return self.isBold ? removeBold() : setBold()
+        return self.isBold ? desetBold() : setBold()
     }
+    
+    func toggleItalic () -> UIFont {
+        return self.isItalic ? desetItalic() : setItalic()
+    }
+    
     
     var isBold: Bool
     {
         return fontDescriptor.symbolicTraits.contains(.traitBold)
     }
     
+    var isItalic: Bool
+    {
+        return fontDescriptor.symbolicTraits.contains(.traitItalic)
+    }
+    
+    
     func setBold() -> UIFont
     {
-        if isBold {
+        if(isBold)
+        {
             return self
-        } else {
-            return UIFont(name: "AvenirNext-Bold", size: self.pointSize)!
+        }
+        else
+        {
+            var fontAtrAry = fontDescriptor.symbolicTraits
+            fontAtrAry.insert([.traitBold])
+            let fontAtrDetails = fontDescriptor.withSymbolicTraits(fontAtrAry)
+            return UIFont(descriptor: fontAtrDetails!, size: pointSize)
         }
     }
     
-    func removeBold()-> UIFont
+    func setItalic()-> UIFont
     {
-        if !isBold {
+        if(isItalic)
+        {
             return self
-        } else {
-            return UIFont(name: "AvenirNext-Regular", size: self.pointSize)!
+        }
+        else
+        {
+            var fontAtrAry = fontDescriptor.symbolicTraits
+            fontAtrAry.insert([.traitItalic])
+            let fontAtrDetails = fontDescriptor.withSymbolicTraits(fontAtrAry)
+            return UIFont(descriptor: fontAtrDetails!, size: pointSize)
+        }
+    }
+    func desetBold() -> UIFont
+    {
+        if(!isBold)
+        {
+            return self
+        }
+        else
+        {
+            var fontAtrAry = fontDescriptor.symbolicTraits
+            fontAtrAry.remove([.traitBold])
+            let fontAtrDetails = fontDescriptor.withSymbolicTraits(fontAtrAry)
+            return UIFont(descriptor: fontAtrDetails!, size: pointSize)
         }
     }
     
+    func desetItalic()-> UIFont
+    {
+        if(!isItalic)
+        {
+            return self
+        }
+        else
+        {
+            var fontAtrAry = fontDescriptor.symbolicTraits
+            fontAtrAry.remove([.traitItalic])
+            let fontAtrDetails = fontDescriptor.withSymbolicTraits(fontAtrAry)
+            return UIFont(descriptor: fontAtrDetails!, size: pointSize)
+        }
+    }
 }
+
+
+
+
 
 
 func + (left: NSAttributedString, right: NSAttributedString) -> NSAttributedString
