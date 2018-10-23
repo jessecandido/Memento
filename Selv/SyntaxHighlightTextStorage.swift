@@ -53,7 +53,7 @@ class SyntaxHighlightTextStorage: NSTextStorage {
           match, flags, stop in
           // apply the style
           if let matchRange = match?.range(at: 1) {
-            print("Matched pattern: \(pattern)")
+            //print("Matched pattern: \(pattern)")
             addAttributes(attributes, range: matchRange)
             
             // reset the style to the original

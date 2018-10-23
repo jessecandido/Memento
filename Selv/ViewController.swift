@@ -16,12 +16,38 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
     @IBOutlet weak var magicView: UIView!
     @IBOutlet weak var calendar: FSCalendar!
     
+    var context: NSManagedObjectContext!
     
     var currentDate = Date() {
         willSet {
+            print("current date updates: + \(newValue)")
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "NoteEntry")
+            request.predicate = NSPredicate(format: "timestamp = %@", newValue as CVarArg)
+            request.returnsObjectsAsFaults = false
+            do {
+                let result = try context.fetch(request)
+                for data in result as! [NSManagedObject] {
+                    //print(data.value(forKey: "timestamp") as! String)
+                    note = Note(text: data.value(forKey: "contents") as! String, time: newValue)
+                }
+                if result.count == 0 {
+                    print ("nothing here")
+                    note = Note(text: " ", time: newValue)
+                }
+                
+            } catch {
+                
+                print("Failed")
+            }
+            
+            
+            
+            
+            
+            
             //try to get text for note. Is no success, then it is empty
-            note = Note(text: " UHHH " + newValue.description, time: newValue)
-            print(newValue)
+            
+           // print(newValue)
             timeView = TimeIndicatorView(date: newValue)
             textView.addSubview(timeView)
             updateTimeIndicatorFrame()
@@ -38,7 +64,7 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
     var timeView: TimeIndicatorView!
     
     
-    var note = Note(text: " Helloo!!! ", time: Date())
+    var note: Note!
     
     fileprivate lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -59,21 +85,35 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
         return .lightContent
     }
     @IBAction func doneButton(_ sender: Any) {
+        textView.endEditing(true)
         textView.resignFirstResponder()
+    }
+    
+    @objc func saveBeforeClosing(){
+        textView.endEditing(true)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(self.saveBeforeClosing), name: UIApplication.willTerminateNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.saveBeforeClosing), name: UIApplication.willResignActiveNotification, object: nil)
+        
         if UIDevice.current.model.hasPrefix("iPad") {
             self.calendarHeightConstraint.constant = 400
         }
     
+        
         createTextView()
         
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        context = appDelegate.persistentContainer.viewContext
+        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        
         let today = Date()
-        currentDate = today
+        
         self.calendar.select(today)
+       // print("today: \(today) XXXXXXXXX calendar: \(calendar.selectedDate)")
        // updateDate(today)
         
         // TODO: get data for today here.
@@ -92,7 +132,6 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
         textView.adjustsFontForContentSizeCategory = true
         
         textView.tintColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
-        textView.addSubview(timeView)
         
         //    NotificationCenter.default.addObserver(self,
         //                                           selector: #selector(keyboardDidShow),
@@ -107,6 +146,7 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
         
+        currentDate = calendar.selectedDate!
         
     }
     
@@ -177,7 +217,8 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
         if monthPosition == .next || monthPosition == .previous {
             calendar.setCurrentPage(date, animated: true)
         }
-        print("selected")
+        textView.endEditing(true)
+        //print("selected")
         // TODO: get data for the new date
         currentDate = date
         
@@ -188,6 +229,12 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
        // print("\(self.dateFormatter.string(from: calendar.currentPage))")
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self, name: UIApplication.willTerminateNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
+        
+    }
+
     
     // MARK:- Target actions
     
@@ -201,10 +248,10 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
     
     func createTextView() {
         // 1
-        let attrs = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .body)]
-        let attrString = NSAttributedString(string: note.contents, attributes: attrs)
+       // let attrs = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .body)]
+       // let attrString = NSAttributedString(string: note.contents, attributes: attrs)
         textStorage = SyntaxHighlightTextStorage()
-        textStorage.append(attrString)
+      //  textStorage.append(attrString)
         
         let newTextViewRect = magicView.bounds
         
@@ -276,5 +323,17 @@ extension Date {
 extension NoteViewController: UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
         note.contents = textView.text
+        
+        let entity = NSEntityDescription.entity(forEntityName: "NoteEntry", in: context)
+        let newNote = NSManagedObject(entity: entity!, insertInto: context)
+        newNote.setValue(textView.text, forKey: "contents")
+        newNote.setValue(currentDate, forKey: "timestamp")
+        
+        do {
+            try context.save()
+        } catch {
+            print("Failed saving")
+        }
+        
     }
 }

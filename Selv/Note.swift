@@ -17,7 +17,7 @@ class Note {
     contents = text
     timestamp = time
   }
-  
+    
 }
 
 
