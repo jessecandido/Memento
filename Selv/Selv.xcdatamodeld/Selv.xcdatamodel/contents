@@ -2,7 +2,6 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14315.18" systemVersion="18B57c" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="NoteEntry" representedClassName="NoteEntry" syncable="YES" codeGenerationType="class">
         <attribute name="attributes" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="contents" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
@@ -11,6 +10,6 @@
         </uniquenessConstraints>
     </entity>
     <elements>
-        <element name="NoteEntry" positionX="-63" positionY="-18" width="128" height="90"/>
+        <element name="NoteEntry" positionX="-63" positionY="-18" width="128" height="75"/>
     </elements>
 </model>

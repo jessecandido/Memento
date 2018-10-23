@@ -43,32 +43,28 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
             do {
                 let result = try context.fetch(request)
                 for data in result as! [NSManagedObject] {
+                    print("got data")
                     //print(data.value(forKey: "timestamp") as! String)
-                    note = Note(text: data.value(forKey: "contents") as! String, time: newValue)
                     attrs = data.value(forKey: "attributes") as! NSAttributedString
+                    note = Note(text: attrs.string, time: newValue)
+                    textStorage.setAttributedString(attrs)
                 }
                 if result.count == 0 {
                     print ("nothing here")
                     note = Note(text: " ", time: newValue)
-                    attrs = NSAttributedString(string: note.contents, attributes: [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .body)])
+                    attrs = NSAttributedString(string: " ", attributes: [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .body)])
+                    textStorage.setAttributedString(attrs)
                 }
             } catch {
                 print("Failed")
             }
-            
-            
-            
-            
-            
-            
-            //try to get text for note. Is no success, then it is empty
             
            // print(newValue)
             timeView = TimeIndicatorView(date: newValue)
             textView.addSubview(timeView)
             updateTimeIndicatorFrame()
             textView.setNeedsDisplay()
-            textStorage.setAttributedString(attrs)
+            
         }
     }
     
@@ -145,7 +141,7 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
 
         NotificationCenter.default.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
-        
+
         currentDate = calendar.selectedDate!
         
     }
@@ -153,7 +149,7 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
     override func viewDidLayoutSubviews() {
         updateTimeIndicatorFrame()
         textStorage.update()
-        
+        print("updated sotrage")
     }
     
     func updateTimeIndicatorFrame() {
@@ -311,10 +307,9 @@ extension Date {
 extension NoteViewController: UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
         note.contents = textView.text
-        
+        print("didendediting")
         let entity = NSEntityDescription.entity(forEntityName: "NoteEntry", in: context)
         let newNote = NSManagedObject(entity: entity!, insertInto: context)
-        newNote.setValue(textView.text, forKey: "contents")
         newNote.setValue(currentDate, forKey: "timestamp")
         newNote.setValue(textView.attributedText, forKey: "attributes")
         
