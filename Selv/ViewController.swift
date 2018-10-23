@@ -11,8 +11,10 @@ import CoreData
 
 class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate, UIGestureRecognizerDelegate {
     
+    @IBOutlet weak var textView: UITextView!
+    @IBOutlet var toolbarView: UIView!
     @IBOutlet weak var calendar: FSCalendar!
-    @IBOutlet weak var secret: UITextView!
+    @IBOutlet weak var dateField: UITextField!
     
     @IBOutlet weak var calendarHeightConstraint: NSLayoutConstraint!
     
@@ -37,15 +39,22 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
         if UIDevice.current.model.hasPrefix("iPad") {
             self.calendarHeightConstraint.constant = 400
         }
-        self.calendar.select(Date())
+    
         
+        let today = Date()
+        self.calendar.select(today)
+        dateField.text = today.getMonthName() + " " + today.getDay()
         // TODO: get data for today here.
         
         self.view.addGestureRecognizer(self.scopeGesture)
         self.calendar.scope = .week
         // For UITest
         self.calendar.accessibilityIdentifier = "calendar"
-
+        toolbarView.sizeToFit()
+        toolbarView.alpha = 0.9
+        textView.inputAccessoryView = toolbarView
+        textView.font = .preferredFont(forTextStyle: .body)
+        textView.adjustsFontForContentSizeCategory = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -79,5 +88,26 @@ class ViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate
             self.calendar.setScope(.month, animated: true)
         }
     }
+    
+}
+
+
+
+extension Date {
+    
+    func getMonthName() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM"
+        let strMonth = dateFormatter.string(from: self)
+        return strMonth
+    }
+    
+    func getDay() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd"
+        let strDay = dateFormatter.string(from: self)
+        return strDay
+    }
+    
     
 }
