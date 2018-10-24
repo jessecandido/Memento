@@ -9,9 +9,64 @@
 import UIKit
 import CoreData
 
-class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate, UIGestureRecognizerDelegate {
+class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate, UIGestureRecognizerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     
+    func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage {
+        
+        let scale = newWidth / image.size.width
+        let newHeight = image.size.height * scale
+        UIGraphicsBeginImageContext(CGSize(width:newWidth, height:newHeight))
+        image.draw(in: CGRect(x:0, y: 0, width: newWidth, height: newHeight))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage!
+    }
+
+    let imagePicker = UIImagePickerController()
+
+    @IBAction func addImage(_ sender: Any) {
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+            imagePicker.delegate = self
+            imagePicker.sourceType = .photoLibrary;
+            imagePicker.allowsEditing = false
+            imagePicker.mediaTypes = ["public.image"]
+            self.present(imagePicker, animated: true, completion: nil)
+        }
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let mediaType = info[UIImagePickerController.InfoKey.mediaType] as? String {
+            if mediaType  == "public.image" {
+                let image = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
+                let textAttachment = NSTextAttachment()
+                let newImage = resizeImage(image: image, newWidth: textView.frame.width)
+                
+                textAttachment.image = newImage
+               // var newString = NSMutableAttributedString(attachment: textAttachment)
+                let newString = NSMutableAttributedString(attachment: textAttachment)
+                let customFont = UIFont(name: "AvenirNext-Regular", size: UIFont.labelFontSize)!
+                newString.addAttribute(NSAttributedString.Key.font, value: UIFontMetrics.default.scaledFont(for: customFont), range: NSRange(location: 0, length: newString.length))
+
+               // let attrs = NSMutableAttributedString(string: "", attributes: [NSMutableAttributedString.Key.font: UIFontMetrics.default.scaledFont(for: customFont!)])
+               // let str = NSMutableAttributedString(attributedString: textView.attributedText)
+//                str.append(newString)
+//
+//                str.addAttribute(NSAttributedString.Key.font, value: customFont, range: NSRange(location: 0, length: str.length))
+//
+//                textView.attributedText = str //+ attrs
+//                textView.scrollRangeToVisible(NSRange(location: str.length, length: 0))
+                textView.textStorage.insert(newString, at: textView.selectedRange.location)
+                textView.textColor = #colorLiteral(red: 0.370555222, green: 0.3705646992, blue: 0.3705595732, alpha: 1)
+                
+//                let temp = NSMutableAttributedString(attributedString: textView.attributedText)
+//                temp.addAttribute(NSAttributedString.Key.font, value: customFont, range: NSRange(location: 0, length: temp.length))
+//                textView.attributedText = temp
+            }
+            dismiss(animated:true, completion: {super.dismiss(animated: true, completion: nil)})
+        }
+    }
     
     
     
@@ -104,6 +159,8 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
                     
                     note = Note(text: attrs.string, time: newValue)
                     textStorage.setAttributedString(attrs)
+                    let newPosition = textView.endOfDocument
+                    textView.selectedTextRange = textView.textRange(from: newPosition, to: newPosition)
 
                 }
                 if result.count == 0 {
@@ -489,7 +546,7 @@ extension UIFont{
 
 
 
-func + (left: NSAttributedString, right: NSAttributedString) -> NSAttributedString
+func + (left: NSMutableAttributedString, right: NSMutableAttributedString) -> NSMutableAttributedString
 {
     let result = NSMutableAttributedString()
     result.append(left)
@@ -520,17 +577,7 @@ func + (left: NSAttributedString, right: NSAttributedString) -> NSAttributedStri
 //        }
 //    }
     
-    func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage {
-        
-        let scale = newWidth / image.size.width
-        let newHeight = image.size.height * scale
-        UIGraphicsBeginImageContext(CGSize(width:newWidth, height:newHeight))
-        image.draw(in: CGRect(x:0, y: 0, width: newWidth, height: newHeight))
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return newImage!
-    }
+   
 }
 
 extension NSTextAttachment {

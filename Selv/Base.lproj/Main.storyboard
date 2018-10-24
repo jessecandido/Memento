@@ -7,6 +7,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -123,12 +124,11 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" distribution="equalSpacing" spacing="154" translatesAutoresizingMaskIntoConstraints="NO" id="oDW-gY-gse">
-                            <rect key="frame" x="10" y="8" width="349" height="36"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="164" translatesAutoresizingMaskIntoConstraints="NO" id="oDW-gY-gse">
+                            <rect key="frame" x="10" y="12" width="353" height="36"/>
                             <subviews>
-                                <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="k6y-6E-2XU">
-                                    <rect key="frame" x="0.0" y="0.0" width="150" height="36"/>
+                                <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="k6y-6E-2XU">
+                                    <rect key="frame" x="0.0" y="0.0" width="144" height="36"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kc1-qz-ibm">
                                             <rect key="frame" x="0.0" y="0.0" width="30" height="36"/>
@@ -139,7 +139,7 @@
                                             </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="olV-Me-8WC">
-                                            <rect key="frame" x="60" y="0.0" width="30" height="36"/>
+                                            <rect key="frame" x="38" y="0.0" width="30" height="36"/>
                                             <fontDescription key="fontDescription" name="AvenirNext-Italic" family="Avenir Next" pointSize="17"/>
                                             <state key="normal" title="I"/>
                                             <connections>
@@ -147,7 +147,7 @@
                                             </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zaa-L4-fi9">
-                                            <rect key="frame" x="120" y="0.0" width="30" height="36"/>
+                                            <rect key="frame" x="76" y="0.0" width="30" height="36"/>
                                             <state key="normal">
                                                 <attributedString key="attributedTitle">
                                                     <fragment content="U">
@@ -166,10 +166,20 @@
                                                 <action selector="underlineText:" destination="Hrc-wy-oIK" eventType="touchUpInside" id="Hb7-0v-DtU"/>
                                             </connections>
                                         </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9lT-in-K2K">
+                                            <rect key="frame" x="114" y="0.0" width="30" height="36"/>
+                                            <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="17"/>
+                                            <state key="normal" title="+">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="addImage:" destination="Hrc-wy-oIK" eventType="touchUpInside" id="It7-t6-XQf"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                 </stackView>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2dA-6K-4Fu">
-                                    <rect key="frame" x="304" y="0.0" width="45" height="36"/>
+                                    <rect key="frame" x="308" y="0.0" width="45" height="36"/>
                                     <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="17"/>
                                     <state key="normal" title="Done">
                                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -182,6 +192,11 @@
                         </stackView>
                     </subviews>
                     <color key="backgroundColor" red="0.0" green="0.56284224989999998" blue="0.31881666180000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstItem="zwn-BY-D3N" firstAttribute="trailing" secondItem="oDW-gY-gse" secondAttribute="trailing" constant="12" id="Rtl-qV-DS0"/>
+                        <constraint firstItem="oDW-gY-gse" firstAttribute="leading" secondItem="zwn-BY-D3N" secondAttribute="leading" constant="10" id="XwH-DL-xMI"/>
+                        <constraint firstItem="oDW-gY-gse" firstAttribute="centerY" secondItem="zwn-BY-D3N" secondAttribute="centerY" id="jkK-uM-7Mw"/>
+                    </constraints>
                     <viewLayoutGuide key="safeArea" id="zwn-BY-D3N"/>
                 </view>
             </objects>
