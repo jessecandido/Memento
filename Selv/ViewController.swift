@@ -59,7 +59,7 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
 //                textView.scrollRangeToVisible(NSRange(location: str.length, length: 0))
                 textView.textStorage.insert(newString, at: textView.selectedRange.location)
                 textView.textColor = #colorLiteral(red: 0.370555222, green: 0.3705646992, blue: 0.3705595732, alpha: 1)
-                
+                textView.endEditing(true)
 //                let temp = NSMutableAttributedString(attributedString: textView.attributedText)
 //                temp.addAttribute(NSAttributedString.Key.font, value: customFont, range: NSRange(location: 0, length: temp.length))
 //                textView.attributedText = temp
@@ -69,8 +69,8 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
     }
     
     
+    @IBOutlet weak var textView: UITextView!
     
-    var textView: UITextViewFixed!
     @IBOutlet var toolbarView: UIView!
     @IBOutlet weak var magicView: UIView!
     @IBOutlet weak var calendar: FSCalendar!
@@ -158,7 +158,7 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
                     
                     
                     note = Note(text: attrs.string, time: newValue)
-                    textStorage.setAttributedString(attrs)
+                    textView.textStorage.setAttributedString(attrs)
                     let newPosition = textView.endOfDocument
                     textView.selectedTextRange = textView.textRange(from: newPosition, to: newPosition)
 
@@ -171,7 +171,7 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
                     let customFont = UIFont(name: "AvenirNext-Regular", size: UIFont.labelFontSize)
                 
                     attrs = NSMutableAttributedString(string: "", attributes: [NSMutableAttributedString.Key.font: UIFontMetrics.default.scaledFont(for: customFont!)])
-                    textStorage.setAttributedString(attrs)
+                    textView.textStorage.setAttributedString(attrs)
                     
                 }
             } catch {
@@ -192,7 +192,7 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
     
     @IBOutlet weak var calendarHeightConstraint: NSLayoutConstraint!
     
-    var textStorage: NSTextStorage!//SyntaxHighlightTextStorage!
+   // var textStorage: NSTextStorage!//SyntaxHighlightTextStorage!
     //var timeView: TimeIndicatorView!
     
     
@@ -234,8 +234,6 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
         if UIDevice.current.model.hasPrefix("iPad") {
             self.calendarHeightConstraint.constant = 400
         }
-    
-        createTextView()
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         context = appDelegate.persistentContainer.viewContext
@@ -253,9 +251,7 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
         
         
         
-        textView.isScrollEnabled = true
         navigationController?.navigationBar.barStyle = .black
-        textView.tintColor = #colorLiteral(red: 1, green: 0.4932718873, blue: 0.4739984274, alpha: 1)
         textView.inputAccessoryView = toolbarView
         
         
@@ -264,7 +260,7 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
         textView.textColor = #colorLiteral(red: 0.370555222, green: 0.3705646992, blue: 0.3705595732, alpha: 1)
         textView.adjustsFontForContentSizeCategory = true
         
-        
+        textView.delegate = self
         NotificationCenter.default.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
 
@@ -363,41 +359,7 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
             self.calendar.setScope(.month, animated: true)
         }
     }
-    
-    func createTextView() {
-        // 1
-       // let attrs = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .body)]
-       // let attrString = NSAttributedString(string: note.contents, attributes: attrs)
-        textStorage = NSTextStorage() //SyntaxHighlightTextStorage()
-      //  textStorage.append(attrString)
-        
-        let newTextViewRect = magicView.bounds
-        
-        // 2
-        let layoutManager = NSLayoutManager()
-        
-        // 3
-        let containerSize = CGSize(width: newTextViewRect.width, height: .greatestFiniteMagnitude)
-        let container = NSTextContainer(size: containerSize)
-        container.widthTracksTextView = true
-        layoutManager.addTextContainer(container)
-        textStorage.addLayoutManager(layoutManager)
-        
-        // 4
-        textView = UITextViewFixed(frame: newTextViewRect, textContainer: container)
-        textView.delegate = self
-        textView.allowsEditingTextAttributes = true
-        magicView.addSubview(textView)
-        
-        // 5
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            textView.leadingAnchor.constraint(equalTo: magicView.leadingAnchor),
-            textView.trailingAnchor.constraint(equalTo: magicView.trailingAnchor),
-            textView.topAnchor.constraint(equalTo: magicView.topAnchor),
-            textView.bottomAnchor.constraint(equalTo: magicView.bottomAnchor)
-            ])
-    }
+
     
     
     
@@ -556,8 +518,8 @@ func + (left: NSMutableAttributedString, right: NSMutableAttributedString) -> NS
 
 
 
-@IBDesignable class UITextViewFixed: UITextView {
-    override func layoutSubviews() {
+extension UITextView {
+    override open func layoutSubviews() {
         super.layoutSubviews()
         setup()
     }
