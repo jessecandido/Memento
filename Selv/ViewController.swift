@@ -11,6 +11,10 @@ import CoreData
 
 class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate, UIGestureRecognizerDelegate {
     
+    
+    
+    
+    
     var textView: UITextViewFixed!
     @IBOutlet var toolbarView: UIView!
     @IBOutlet weak var magicView: UIView!
@@ -90,8 +94,8 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
 //                    if let font = attrs.attribute(NSAttributedString.Key.font, at: 0, effectiveRange: &range) as? UIFont {
 //                        attrs.addAttribute(NSMutableAttributedString.Key.font, value: UIFontMetrics.default.scaledFont(for: font), range: NSRange(location:0,length:attrs.length))
 //                    }
-                        
-                        
+                    
+                    
                     
                         
                     
@@ -197,6 +201,7 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
         textView.tintColor = #colorLiteral(red: 1, green: 0.4932718873, blue: 0.4739984274, alpha: 1)
         textView.inputAccessoryView = toolbarView
         
+        
         let customFont = UIFont(name: "AvenirNext-Regular", size: UIFont.labelFontSize)
         textView.font = UIFontMetrics.default.scaledFont(for: customFont!)
         textView.textColor = #colorLiteral(red: 0.370555222, green: 0.3705646992, blue: 0.3705595732, alpha: 1)
@@ -215,12 +220,16 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
 //            print("Family: \(family) Font names: \(names)")
 //        }
     }
+
     
     override func viewDidLayoutSubviews() {
        // updateTimeIndicatorFrame()
         //textStorage.update()
+        super.viewDidLayoutSubviews()
         print("updated sotrage")
     }
+    
+    
     
 //    func updateTimeIndicatorFrame() {
 //        timeView.updateSize()
@@ -499,4 +508,38 @@ func + (left: NSAttributedString, right: NSAttributedString) -> NSAttributedStri
         textContainerInset = UIEdgeInsets.zero
         textContainer.lineFragmentPadding = 0
     }
+    
+//
+//    override func paste(_ sender: Any?) {
+//        let textAttachment = NSTextAttachment()
+//        if let image = UIPasteboard.general.image {
+//            let newImage = resizeImage(image: image, newWidth: self.frame.width)
+//            textAttachment.image = newImage
+//            //textAttachment.setImageWidth(width: self.frame.width)
+//            attributedText = NSAttributedString(attachment: textAttachment)
+//        }
+//    }
+    
+    func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage {
+        
+        let scale = newWidth / image.size.width
+        let newHeight = image.size.height * scale
+        UIGraphicsBeginImageContext(CGSize(width:newWidth, height:newHeight))
+        image.draw(in: CGRect(x:0, y: 0, width: newWidth, height: newHeight))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage!
+    }
 }
+
+extension NSTextAttachment {
+    func setImageWidth(width: CGFloat) {
+        guard let image = image else { return }
+        let ratio = image.size.width / image.size.height
+        
+        bounds = CGRect(x: bounds.origin.x, y: bounds.origin.y, width: width, height: width / ratio)
+    }
+}
+
+
