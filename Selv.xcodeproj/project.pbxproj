@@ -17,6 +17,7 @@
 		B217338A217FB5220051A465 /* OpenDyslexic-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = B2173380217FB5220051A465 /* OpenDyslexic-BoldItalic.otf */; };
 		B217338B217FB5220051A465 /* OpenDyslexicAlta-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = B2173381217FB5220051A465 /* OpenDyslexicAlta-BoldItalic.otf */; };
 		B217338C217FB5220051A465 /* OpenDyslexic-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = B2173382217FB5220051A465 /* OpenDyslexic-Bold.otf */; };
+		B271105E2191E88D007D2466 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = B271105D2191E88D007D2466 /* Search.swift */; };
 		B28427AC217ECFA1008F8C21 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28427A8217ECFA0008F8C21 /* Note.swift */; };
 		B28427AD217ECFA1008F8C21 /* SyntaxHighlightTextStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28427A9217ECFA0008F8C21 /* SyntaxHighlightTextStorage.swift */; };
 		B28427AF217ECFA1008F8C21 /* TimeIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28427AB217ECFA1008F8C21 /* TimeIndicatorView.swift */; };
@@ -55,6 +56,7 @@
 		B2173380217FB5220051A465 /* OpenDyslexic-BoldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenDyslexic-BoldItalic.otf"; sourceTree = "<group>"; };
 		B2173381217FB5220051A465 /* OpenDyslexicAlta-BoldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenDyslexicAlta-BoldItalic.otf"; sourceTree = "<group>"; };
 		B2173382217FB5220051A465 /* OpenDyslexic-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenDyslexic-Bold.otf"; sourceTree = "<group>"; };
+		B271105D2191E88D007D2466 /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
 		B28427A8217ECFA0008F8C21 /* Note.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		B28427A9217ECFA0008F8C21 /* SyntaxHighlightTextStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyntaxHighlightTextStorage.swift; sourceTree = "<group>"; };
 		B28427AB217ECFA1008F8C21 /* TimeIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeIndicatorView.swift; sourceTree = "<group>"; };
@@ -150,6 +152,7 @@
 		B2993F1320637970000A6049 /* Selv */ = {
 			isa = PBXGroup;
 			children = (
+				B271105D2191E88D007D2466 /* Search.swift */,
 				B2993F1420637970000A6049 /* AppDelegate.swift */,
 				B2993F1620637970000A6049 /* ViewController.swift */,
 				B28427A8217ECFA0008F8C21 /* Note.swift */,
@@ -302,6 +305,7 @@
 				B2993F58206379C4000A6049 /* FSCalendarCell.m in Sources */,
 				B2993F5C206379C4000A6049 /* FSCalendarConstants.m in Sources */,
 				B2993F59206379C4000A6049 /* FSCalendarExtensions.m in Sources */,
+				B271105E2191E88D007D2466 /* Search.swift in Sources */,
 				B2993F50206379C4000A6049 /* FSCalendarTransitionCoordinator.m in Sources */,
 				B2993F1720637970000A6049 /* ViewController.swift in Sources */,
 				B28427AC217ECFA1008F8C21 /* Note.swift in Sources */,

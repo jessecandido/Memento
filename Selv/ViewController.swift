@@ -36,6 +36,13 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
         }
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "SearchSegue" {
+            let vc = segue.destination as! Search
+            vc.context = context
+        }
+    }
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let mediaType = info[UIImagePickerController.InfoKey.mediaType] as? String {
             if mediaType  == "public.image" {
@@ -57,14 +64,27 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
 //
 //                textView.attributedText = str //+ attrs
 //                textView.scrollRangeToVisible(NSRange(location: str.length, length: 0))
+                
                 textView.textStorage.insert(newString, at: textView.selectedRange.location)
                 textView.textColor = #colorLiteral(red: 0.370555222, green: 0.3705646992, blue: 0.3705595732, alpha: 1)
-                textView.endEditing(true)
+                textView.selectedRange.location += 2
+                
+                let bottomRange = NSRange(location: textView.selectedRange.location + 2, length: 1)
+                
+                textView.scrollRangeToVisible(bottomRange)
+
+                //textView.endEditing(true)
+                
 //                let temp = NSMutableAttributedString(attributedString: textView.attributedText)
 //                temp.addAttribute(NSAttributedString.Key.font, value: customFont, range: NSRange(location: 0, length: temp.length))
 //                textView.attributedText = temp
             }
-            dismiss(animated:true, completion: {super.dismiss(animated: true, completion: nil)})
+            dismiss(animated:true, completion: {
+                super.dismiss(animated: true, completion: nil)
+                self.textView.becomeFirstResponder()
+                //self.textView.scrollToBottom()
+                //self.textView.simple_scrollToBottom()
+            })
         }
     }
     
@@ -249,16 +269,21 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
         toolbarView.sizeToFit()
         toolbarView.alpha = 0.9
         
-        
-        
+        textView.tintColor = #colorLiteral(red: 1, green: 0.4932718873, blue: 0.4739984274, alpha: 1)
         navigationController?.navigationBar.barStyle = .black
         textView.inputAccessoryView = toolbarView
+        textView.becomeFirstResponder()
         
         
+    
         let customFont = UIFont(name: "AvenirNext-Regular", size: UIFont.labelFontSize)
         textView.font = UIFontMetrics.default.scaledFont(for: customFont!)
         textView.textColor = #colorLiteral(red: 0.370555222, green: 0.3705646992, blue: 0.3705595732, alpha: 1)
         textView.adjustsFontForContentSizeCategory = true
+        
+      //  textView.layoutManager.allowsNonContiguousLayout = false
+      //  textView.addObserver(self, forKeyPath: "contentSize", options: .new, context: nil)
+        
         
         textView.delegate = self
         NotificationCenter.default.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -273,7 +298,6 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
 //            print("Family: \(family) Font names: \(names)")
 //        }
     }
-
     
     override func viewDidLayoutSubviews() {
        // updateTimeIndicatorFrame()
@@ -392,6 +416,12 @@ extension Date {
         return strDay
     }
     
+    func getYear() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "YYYY"
+        let strDay = dateFormatter.string(from: self)
+        return strDay
+    }
     
 }
 
@@ -551,4 +581,46 @@ extension NSTextAttachment {
     }
 }
 
-
+class TextView: UITextView {
+    
+    enum VerticalAlignment: Int {
+        case Top = 0, Middle, Bottom
+    }
+    
+    var verticalAlignment: VerticalAlignment = .Middle
+    
+    //override contentSize property and observe using didSet
+    override var contentSize: CGSize {
+        didSet {
+            let textView = self
+            let height = textView.bounds.size.height
+            let contentHeight:CGFloat = contentSize.height
+            var topCorrect: CGFloat = 0.0
+            switch(self.verticalAlignment){
+            case .Top:
+                textView.contentOffset = CGPoint.zero //set content offset to top
+            case .Middle:
+                topCorrect = (height - contentHeight * textView.zoomScale)/2.0
+                topCorrect = topCorrect < 0 ? 0 : topCorrect
+                textView.contentOffset = CGPoint(x: 0, y: -topCorrect)
+            case .Bottom:
+                topCorrect = textView.bounds.size.height - contentHeight
+                topCorrect = topCorrect < 0 ? 0 : topCorrect
+                textView.contentOffset = CGPoint(x: 0, y: -topCorrect)
+            }
+            if contentHeight >= height { //if the contentSize is greater than the height
+                topCorrect = contentHeight - height //set the contentOffset to be the
+                topCorrect = topCorrect < 0 ? 0 : topCorrect //contentHeight - height of textView
+                textView.contentOffset = CGPoint(x: 0, y: topCorrect)
+            }
+        }
+    }
+    
+    // MARK: - UIView
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        let size = self.contentSize //forces didSet to be called
+        self.contentSize = size
+    }
+}
