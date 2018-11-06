@@ -11,7 +11,10 @@ import CoreData
 
 class Search : UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
     
+    
     lazy var dataArray = [(date: Date, text: NSAttributedString)]()
+    
+    lazy var dataArrayOriginal = [(date: Date, text: NSAttributedString)]()
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -40,7 +43,7 @@ class Search : UIViewController, UISearchBarDelegate, UITableViewDelegate, UITab
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let userInfo = ["item": dataArray[indexPath.row]]
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "reload"), object: nil, userInfo: userInfo)
-        self.dismiss(animated: true, completion: nil)
+        self.navigationController?.popViewController(animated: true)
     }
     
     
@@ -56,6 +59,7 @@ class Search : UIViewController, UISearchBarDelegate, UITableViewDelegate, UITab
         super.viewDidLoad()
         fetchData()
         searchBar.delegate = self
+        searchBar.placeholder = "Search Notes"
         tableView.delegate = self
         tableView.dataSource = self
     }
@@ -67,8 +71,25 @@ class Search : UIViewController, UISearchBarDelegate, UITableViewDelegate, UITab
         
     }
     
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return dataArray.isEmpty ? "No results" : ""
+    }
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         print(searchText)
+        if(searchText == ""){
+            dataArray = dataArrayOriginal
+        } else {
+            //dataArray = dataArrayOriginal.
+            dataArray = dataArrayOriginal.filter {$0.text.string.lowercased().contains(searchText.lowercased()) || $0.date.getDay() == searchText || $0.date.getMonthName().contains(searchText) || $0.date.getYear() == searchText}
+        }
+        tableView.reloadData()
+    }
+    
+    
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
     }
     
     func fetchData(){
@@ -79,9 +100,14 @@ class Search : UIViewController, UISearchBarDelegate, UITableViewDelegate, UITab
             for data in result as! [NSManagedObject] {
                 print("got data")
                 if let date = data.value(forKey: "timestamp"), let text = data.value(forKey: "attributes") {
-                    dataArray.append((date as! Date, text as! NSAttributedString))
+                    if(!((text as? NSAttributedString)?.string.isEmpty)!){
+                        dataArrayOriginal.append((date as! Date, text as! NSAttributedString))
+                    }
                 }
             }
+            dataArrayOriginal.sort {$0.date < $1.date }
+            dataArray = dataArrayOriginal
+            
         }
         catch {}
     }
