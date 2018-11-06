@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Hrc-wy-oIK">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="dvS-io-JHM">
     <device id="retina6_1" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -24,7 +24,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bIJ-9R-axU" customClass="FSCalendar">
-                                <rect key="frame" x="0.0" y="24" width="414" height="300"/>
+                                <rect key="frame" x="0.0" y="68" width="414" height="300"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="300" id="8DO-RY-QI0"/>
                                 </constraints>
@@ -79,13 +79,13 @@
                                 </connections>
                             </view>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" showsVerticalScrollIndicator="NO" keyboardDismissMode="onDrag" translatesAutoresizingMaskIntoConstraints="NO" id="7EQ-Pr-qzK">
-                                <rect key="frame" x="20" y="376" width="374" height="520"/>
+                                <rect key="frame" x="20" y="420" width="374" height="476"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iiZ-SL-eqb">
-                                        <rect key="frame" x="0.0" y="0.0" width="374" height="520"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="476"/>
                                         <subviews>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" showsVerticalScrollIndicator="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZJ2-dv-41b">
-                                                <rect key="frame" x="0.0" y="0.0" width="374" height="520"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="374" height="476"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <color key="tintColor" red="1" green="0.49327188729999999" blue="0.47399842739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <attributedString key="attributedText">
@@ -119,7 +119,7 @@
                                 </constraints>
                             </scrollView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EUl-wv-wSR">
-                                <rect key="frame" x="20" y="332" width="374" height="36"/>
+                                <rect key="frame" x="20" y="376" width="374" height="36"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="26"/>
                                 <color key="textColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -129,7 +129,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Search"/>
                                 <connections>
-                                    <segue destination="Ab5-ei-sqx" kind="show" identifier="SearchSegue" id="Se1-2g-s2M"/>
+                                    <segue destination="Ab5-ei-sqx" kind="presentation" identifier="SearchSegue" id="Se1-2g-s2M"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -148,13 +148,14 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Qww-O9-IPu"/>
                     </view>
-                    <navigationItem key="navigationItem" title="FSCalendar" id="ilA-Lt-Qr4">
+                    <navigationItem key="navigationItem" id="ilA-Lt-Qr4">
                         <barButtonItem key="rightBarButtonItem" title="Toggle" id="iRa-Qm-AfG">
                             <connections>
                                 <action selector="toggleClickedWithSender:" destination="Hrc-wy-oIK" id="1nW-9f-7Sz"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="calendar" destination="bIJ-9R-axU" id="mjD-1a-9rn"/>
                         <outlet property="calendarHeightConstraint" destination="8DO-RY-QI0" id="Ez9-lz-Zlx"/>
@@ -249,7 +250,7 @@
                     <viewLayoutGuide key="safeArea" id="zwn-BY-D3N"/>
                 </view>
             </objects>
-            <point key="canvasLocation" x="1287.890625" y="-249.4875549048316"/>
+            <point key="canvasLocation" x="2197.1014492753625" y="-249.77678571428569"/>
         </scene>
         <!--Search-->
         <scene sceneID="I7i-ep-1CL">
@@ -344,7 +345,26 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="km6-da-KqU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2075.36231884058" y="-249.10714285714283"/>
+            <point key="canvasLocation" x="2985.507246376812" y="-249.10714285714283"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Mii-D4-adU">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="dvS-io-JHM" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="mSV-U8-00n">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Hrc-wy-oIK" kind="relationship" relationship="rootViewController" id="N46-YB-0uE"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dq6-qs-31Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1286.9565217391305" y="-249.77678571428569"/>
         </scene>
     </scenes>
     <color key="tintColor" red="1" green="0.49327188729999999" blue="0.47399842739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

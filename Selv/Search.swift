@@ -11,7 +11,7 @@ import CoreData
 
 class Search : UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
     
-    lazy var dataArray = [(date: Date, text: String)]()
+    lazy var dataArray = [(date: Date, text: NSAttributedString)]()
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -31,11 +31,20 @@ class Search : UIViewController, UISearchBarDelegate, UITableViewDelegate, UITab
         
         //cell.detailTextLabel?.text = note.text
         cell.textLabel?.text = note.date.getMonthName() + " " + note.date.getDay() + ", " + note.date.getYear()
-        cell.detailTextLabel?.text = note.text
+        cell.detailTextLabel?.text = note.text.string
         // Avoid loading image that we don't need anymore
         // Load the image and display another image during the loading
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let userInfo = ["item": dataArray[indexPath.row]]
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "reload"), object: nil, userInfo: userInfo)
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    
+
     
     
     @IBOutlet weak var searchBar: UISearchBar!
@@ -51,6 +60,13 @@ class Search : UIViewController, UISearchBarDelegate, UITableViewDelegate, UITab
         tableView.dataSource = self
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        self.navigationController?.isNavigationBarHidden = false
+        self.navigationController?.navigationBar.barTintColor = .white
+        
+    }
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         print(searchText)
     }
@@ -63,7 +79,7 @@ class Search : UIViewController, UISearchBarDelegate, UITableViewDelegate, UITab
             for data in result as! [NSManagedObject] {
                 print("got data")
                 if let date = data.value(forKey: "timestamp"), let text = data.value(forKey: "attributes") {
-                    dataArray.append((date as! Date, (text as! NSAttributedString).string))
+                    dataArray.append((date as! Date, text as! NSAttributedString))
                 }
             }
         }

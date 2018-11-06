@@ -245,10 +245,20 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
         textView.endEditing(true)
     }
     
+    @objc func reload(_ notification: Notification) {
+        if let target = notification.userInfo?["item"] as? (Date, NSAttributedString) {
+            currentDate = target.0
+            calendar.select(target.0)
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.saveBeforeClosing), name: UIApplication.willTerminateNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(reload), name: Notification.Name(rawValue: "reload"), object: nil)
+
         NotificationCenter.default.addObserver(self, selector: #selector(self.saveBeforeClosing), name: UIApplication.willResignActiveNotification, object: nil)
         
         if UIDevice.current.model.hasPrefix("iPad") {
@@ -351,6 +361,7 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.navigationController?.isNavigationBarHidden = true
     }
     
     func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
