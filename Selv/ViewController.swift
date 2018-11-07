@@ -11,6 +11,10 @@ import CoreData
 
 class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate, UIGestureRecognizerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    @IBAction func goToToday(_ sender: Any) {
+        currentDate = calendar.today!
+        calendar.select(currentDate)
+    }
     
     func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage {
         
@@ -197,8 +201,7 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
             } catch {
                 print("Failed")
             }
-
-            
+            self.title = calendar.currentPage.getMonthName() + " " + calendar.currentPage.getYear()
             dateLabel.text = newValue.getMonthName() + " " + newValue.getDay()
             dateLabel.setNeedsDisplay()
            // print(newValue)
@@ -209,6 +212,7 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
             
         }
     }
+    
     
     @IBOutlet weak var calendarHeightConstraint: NSLayoutConstraint!
     
@@ -274,18 +278,17 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
         
         self.view.addGestureRecognizer(self.scopeGesture)
         self.calendar.scope = .week
+        calendar.allowsMultipleSelection = false
         // For UITest
         self.calendar.accessibilityIdentifier = "calendar"
         toolbarView.sizeToFit()
         toolbarView.alpha = 0.9
         
         textView.tintColor = #colorLiteral(red: 1, green: 0.4932718873, blue: 0.4739984274, alpha: 1)
-        navigationController?.navigationBar.barStyle = .black
+        self.navigationController?.navigationBar.barTintColor = .white
         textView.inputAccessoryView = toolbarView
         textView.becomeFirstResponder()
-        
-        
-    
+                
         let customFont = UIFont(name: "AvenirNext-Regular", size: UIFont.labelFontSize)
         textView.font = UIFontMetrics.default.scaledFont(for: customFont!)
         textView.textColor = #colorLiteral(red: 0.370555222, green: 0.3705646992, blue: 0.3705595732, alpha: 1)
@@ -361,7 +364,7 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.isNavigationBarHidden = true
+        //self.navigationController?.isNavigationBarHidden = true
     }
     
     func calendar(_ calendar: FSCalendar, boundingRectWillChange bounds: CGRect, animated: Bool) {
@@ -378,6 +381,7 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
     }
     
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
+        self.title = calendar.currentPage.getMonthName() + " " + calendar.currentPage.getYear()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
