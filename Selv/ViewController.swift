@@ -20,7 +20,6 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
         self.present(activityViewController, animated: true, completion: nil)
     }
     
-    
     @IBAction func goToToday(_ sender: Any) {
         calendar.scope = .month
         let date = Calendar.current.date(bySettingHour: 3, minute: 00, second: 0, of: calendar.today!)!
