@@ -11,6 +11,16 @@ import CoreData
 
 class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate, UIGestureRecognizerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    @IBAction func sharePressed(_ sender: Any) {
+        
+        let textToShare = [ textView.attributedText ]
+        let activityViewController = UIActivityViewController(activityItems: textToShare as [Any], applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view // so that iPads won't crash
+        // present the view controller
+        self.present(activityViewController, animated: true, completion: nil)
+    }
+    
+    
     @IBAction func goToToday(_ sender: Any) {
         calendar.scope = .month
         let date = Calendar.current.date(bySettingHour: 3, minute: 00, second: 0, of: calendar.today!)!

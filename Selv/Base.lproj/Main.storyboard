@@ -154,11 +154,18 @@
                                 </connections>
                             </barButtonItem>
                         </leftBarButtonItems>
-                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="search" id="crO-IM-aJb">
-                            <connections>
-                                <segue destination="Ab5-ei-sqx" kind="show" identifier="SearchSegue" id="7FT-NC-kNk"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="action" id="ECg-8h-Jms">
+                                <connections>
+                                    <action selector="sharePressed:" destination="Hrc-wy-oIK" id="O8N-yH-yWN"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem style="plain" systemItem="search" id="crO-IM-aJb">
+                                <connections>
+                                    <segue destination="Ab5-ei-sqx" kind="show" identifier="SearchSegue" id="7FT-NC-kNk"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>

@@ -34,7 +34,8 @@ class Search : UIViewController, UISearchBarDelegate, UITableViewDelegate, UITab
         
         //cell.detailTextLabel?.text = note.text
         cell.textLabel?.text = note.date.getMonthName() + " " + note.date.getDay() + ", " + note.date.getYear()
-        cell.detailTextLabel?.text = note.text.string
+        cell.detailTextLabel?.text = note.text.string.removingNewlines
+
         // Avoid loading image that we don't need anymore
         // Load the image and display another image during the loading
         return cell
@@ -110,5 +111,13 @@ class Search : UIViewController, UISearchBarDelegate, UITableViewDelegate, UITab
             
         }
         catch {}
+    }
+}
+
+
+
+extension String {
+    var removingNewlines: String {
+        return components(separatedBy: .newlines).joined(separator: " ")
     }
 }
