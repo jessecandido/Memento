@@ -20,11 +20,11 @@
                         <viewControllerLayoutGuide type="bottom" id="5Wt-6G-mcN"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="diH-N9-a9R">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bIJ-9R-axU" customClass="FSCalendar">
-                                <rect key="frame" x="0.0" y="68" width="414" height="300"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="300"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="300" id="8DO-RY-QI0"/>
                                 </constraints>
@@ -42,7 +42,7 @@
                                         <real key="value" value="0.0"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="number" keyPath="headerHeight">
-                                        <real key="value" value="20"/>
+                                        <real key="value" value="25"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="color" keyPath="headerTitleColor">
                                         <color key="value" red="0.66422420739999999" green="0.66424006219999998" blue="0.66423153879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -80,20 +80,20 @@
                                 </connections>
                             </view>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" showsVerticalScrollIndicator="NO" keyboardDismissMode="onDrag" translatesAutoresizingMaskIntoConstraints="NO" id="7EQ-Pr-qzK">
-                                <rect key="frame" x="20" y="420" width="374" height="476"/>
+                                <rect key="frame" x="20" y="396" width="374" height="340"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iiZ-SL-eqb">
-                                        <rect key="frame" x="0.0" y="0.0" width="374" height="476"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="340"/>
                                         <subviews>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" showsVerticalScrollIndicator="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZJ2-dv-41b">
-                                                <rect key="frame" x="0.0" y="0.0" width="374" height="476"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="374" height="340"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <color key="tintColor" red="1" green="0.49327188729999999" blue="0.47399842739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <attributedString key="attributedText">
                                                     <fragment content="Type something">
                                                         <attributes>
                                                             <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                            <font key="NSFont" metaFont="smallSystem"/>
+                                                            <font key="NSFont" size="20" name="AvenirNext-Regular"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
@@ -120,7 +120,7 @@
                                 </constraints>
                             </scrollView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EUl-wv-wSR">
-                                <rect key="frame" x="20" y="376" width="374" height="36"/>
+                                <rect key="frame" x="20" y="352" width="374" height="36"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="26"/>
                                 <color key="textColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -141,7 +141,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Qww-O9-IPu"/>
                     </view>
-                    <navigationItem key="navigationItem" title="hel3" largeTitleDisplayMode="always" id="ilA-Lt-Qr4">
+                    <navigationItem key="navigationItem" title="Notes" largeTitleDisplayMode="always" id="ilA-Lt-Qr4">
                         <leftBarButtonItems>
                             <barButtonItem style="done" systemItem="organize" id="iRa-Qm-AfG">
                                 <connections>

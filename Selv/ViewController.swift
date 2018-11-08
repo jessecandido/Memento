@@ -12,8 +12,11 @@ import CoreData
 class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate, UIGestureRecognizerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @IBAction func goToToday(_ sender: Any) {
-        currentDate = calendar.today!
-        calendar.select(currentDate)
+        calendar.scope = .month
+        let date = Calendar.current.date(bySettingHour: 3, minute: 00, second: 0, of: calendar.today!)!
+        calendar.select(date)
+        currentDate = date
+        textView.endEditing(true)
     }
     
     func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage {
@@ -42,6 +45,7 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "SearchSegue" {
+            textView.endEditing(true)
             let vc = segue.destination as! Search
             vc.context = context
         }
@@ -183,6 +187,7 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
                     
                     note = Note(text: attrs.string, time: newValue)
                     textView.textStorage.setAttributedString(attrs)
+                    
                     let newPosition = textView.endOfDocument
                     textView.selectedTextRange = textView.textRange(from: newPosition, to: newPosition)
 
@@ -192,9 +197,9 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
                     note = Note(text: "", time: newValue)
                     //let attstr = NSAttributedString(string: newValue.getMonthName() + " " + newValue.getDay() + "", attributes: [NSAttributedString.Key.font : UIFont.preferredFont(forTextStyle: .largeTitle)])
                    
-                    let customFont = UIFont(name: "AvenirNext-Regular", size: UIFont.labelFontSize)
+                   // let customFont = UIFont(name: "AvenirNext-Regular", size: UIFont.labelFontSize)
                 
-                    attrs = NSMutableAttributedString(string: "", attributes: [NSMutableAttributedString.Key.font: UIFontMetrics.default.scaledFont(for: customFont!)])
+                    // attrs = NSMutableAttributedString(string: "", attributes: [NSMutableAttributedString.Key.font: UIFontMetrics.default.scaledFont(for: customFont!)])
                     textView.textStorage.setAttributedString(attrs)
                     
                 }
@@ -251,6 +256,7 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
     
     @objc func reload(_ notification: Notification) {
         if let target = notification.userInfo?["item"] as? (Date, NSAttributedString) {
+            calendar.scope = .month
             currentDate = target.0
             calendar.select(target.0)
         }
@@ -273,8 +279,10 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
         context = appDelegate.persistentContainer.viewContext
         context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         
-        let today = Date()
-        self.calendar.select(today)
+        let today = Calendar.current.date(bySettingHour: 3, minute: 00, second: 0, of: calendar.today!)!
+        //self.calendar.select(today)
+        calendar.select(today)
+        currentDate = today
         
         self.view.addGestureRecognizer(self.scopeGesture)
         self.calendar.scope = .week
@@ -288,9 +296,9 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
         self.navigationController?.navigationBar.barTintColor = .white
         textView.inputAccessoryView = toolbarView
         textView.becomeFirstResponder()
-                
-        let customFont = UIFont(name: "AvenirNext-Regular", size: UIFont.labelFontSize)
-        textView.font = UIFontMetrics.default.scaledFont(for: customFont!)
+        
+        
+        //textView.font = UIFontMetrics.default.scaledFont(for: customFont!)
         textView.textColor = #colorLiteral(red: 0.370555222, green: 0.3705646992, blue: 0.3705595732, alpha: 1)
         textView.adjustsFontForContentSizeCategory = true
         
@@ -302,7 +310,7 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
         NotificationCenter.default.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
 
-        currentDate = calendar.selectedDate!
+        //currentDate = calendar.selectedDate!
         let dateLabelFont = UIFont(name: "AvenirNext-DemiBold", size: 26)
         dateLabel.font = UIFontMetrics.default.scaledFont(for: dateLabelFont!)
         dateLabel.adjustsFontForContentSizeCategory = true
@@ -377,7 +385,8 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
             calendar.setCurrentPage(date, animated: true)
         }
         textView.endEditing(true)
-        currentDate = date
+        currentDate = Calendar.current.date(bySettingHour: 3, minute: 00, second: 0, of: date)!
+
     }
     
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
