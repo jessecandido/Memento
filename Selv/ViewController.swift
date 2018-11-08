@@ -61,7 +61,7 @@ class NoteViewController: UIViewController, FSCalendarDataSource, FSCalendarDele
                 textAttachment.image = newImage
                // var newString = NSMutableAttributedString(attachment: textAttachment)
                 let newString = NSMutableAttributedString(attachment: textAttachment)
-                let customFont = UIFont(name: "AvenirNext-Regular", size: UIFont.labelFontSize)!
+                let customFont = UIFont(name: "AvenirNext-Regular", size: 20)!
                 newString.addAttribute(NSAttributedString.Key.font, value: UIFontMetrics.default.scaledFont(for: customFont), range: NSRange(location: 0, length: newString.length))
 
                // let attrs = NSMutableAttributedString(string: "", attributes: [NSMutableAttributedString.Key.font: UIFontMetrics.default.scaledFont(for: customFont!)])
