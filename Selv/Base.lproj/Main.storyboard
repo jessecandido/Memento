@@ -141,7 +141,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Qww-O9-IPu"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Notes" largeTitleDisplayMode="always" id="ilA-Lt-Qr4">
+                    <navigationItem key="navigationItem" title="Notes" id="ilA-Lt-Qr4">
                         <leftBarButtonItems>
                             <barButtonItem style="done" systemItem="organize" id="iRa-Qm-AfG">
                                 <connections>
@@ -370,6 +370,10 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="mSV-U8-00n">
                         <rect key="frame" x="0.0" y="20" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <textAttributes key="titleTextAttributes">
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                            <color key="textColor" red="0.4756349325" green="0.47564673419999998" blue="0.47564041610000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
